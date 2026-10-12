@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="김가윤">
+<meta name="description" content="국민대학교 경영정보학부 1학년 김가윤의 자기소개 사이트">
+<title>김가윤 | 자기소개</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --text: #1d2233;
+    --muted: #6b7185;
+    --line: #e6e3db;
+    --navy: #1f2d5c;
+    --accent: #ff8a3d;
+    --accent-soft: #fff0e5;
+    --chip: #eef1f8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12141c;
+      --surface: #1b1e29;
+      --text: #eceef4;
+      --muted: #9a9fb2;
+      --line: #2c3040;
+      --navy: #9fb3ff;
+      --accent: #ff9a55;
+      --accent-soft: #33241a;
+      --chip: #252a3a;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Pretendard", system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    line-height: 1.7;
+    word-break: keep-all;
+  }
+  a { color: inherit; }
+
+  /* 위쪽 메뉴 */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .inner {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  nav .logo { font-weight: 800; text-decoration: none; font-size: 17px; }
+  nav .logo span { color: var(--accent); }
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 18px;
+    font-size: 15px;
+  }
+  nav ul a { text-decoration: none; color: var(--muted); }
+  nav ul a:hover { color: var(--text); }
+
+  main { max-width: 760px; margin: 0 auto; padding: 0 16px 64px; }
+
+  /* 첫 화면 */
+  .hero {
+    padding: 72px 0 56px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .avatar {
+    flex: none;
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #1d1206;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 44px;
+    font-weight: 800;
+    box-shadow: 0 0 0 8px var(--accent-soft);
+  }
+  .hero .hello { margin: 0 0 6px; color: var(--accent); font-weight: 700; }
+  .hero h1 {
+    margin: 0 0 10px;
+    font-size: clamp(32px, 7vw, 46px);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  .hero .school { margin: 0; color: var(--muted); font-size: 17px; }
+
+  section { padding: 40px 0; border-top: 1px solid var(--line); }
+  section h2 {
+    margin: 0 0 18px;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  section h2::before {
+    content: "";
+    width: 6px;
+    height: 22px;
+    border-radius: 3px;
+    background: var(--accent);
+  }
+  section p { margin: 0 0 12px; font-size: 16px; }
+
+  /* 기본 정보 표 */
+  .info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .info div {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+  .info dt { font-size: 13px; color: var(--muted); margin-bottom: 2px; }
+  .info dd { margin: 0; font-weight: 700; font-size: 16px; }
+
+  /* 배우는 것 */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .chips span {
+    background: var(--chip);
+    color: var(--navy);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* 만든 것 */
+  .project {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 20px;
+    text-decoration: none;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .project:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .project .icon {
+    flex: none;
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    background: #05060f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+  }
+  .project h3 { margin: 0 0 4px; font-size: 18px; }
+  .project p { margin: 0; color: var(--muted); font-size: 14px; }
+  .project .go { margin-left: auto; color: var(--accent); font-weight: 700; white-space: nowrap; }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    padding: 24px 16px 40px;
+  }
+
+  @media (max-width: 560px) {
+    nav ul { gap: 12px; font-size: 14px; }
+    .hero { flex-direction: column; text-align: center; padding: 48px 0 40px; gap: 22px; }
+    .avatar { width: 108px; height: 108px; font-size: 38px; }
+    .info { grid-template-columns: 1fr; }
+    .project { flex-wrap: wrap; }
+    .project .go { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <a class="logo" href="#top">김가윤<span>.</span></a>
+    <ul>
+      <li><a href="#about">소개</a></li>
+      <li><a href="#learning">배우는 것</a></li>
+      <li><a href="#works">만든 것</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="top">
+
+  <div class="hero">
+    <div class="avatar">가윤</div>
+    <div>
+      <p class="hello">안녕하세요 👋</p>
+      <h1>저는 김가윤입니다</h1>
+      <p class="school">국민대학교 경영정보학부 1학년</p>
+    </div>
+  </div>
+
+  <section id="about">
+    <h2>소개</h2>
+    <p>국민대학교 경영정보학부에서 경영과 IT를 함께 공부하고 있는 1학년 김가윤입니다.</p>
+    <p>코딩은 처음이지만, 직접 만들어 보면서 하나씩 배워 가고 있어요. 이 사이트도 그렇게 만든 결과물이에요!</p>
+    <dl class="info">
+      <div><dt>이름</dt><dd>김가윤</dd></div>
+      <div><dt>학교</dt><dd>국민대학교</dd></div>
+      <div><dt>전공</dt><dd>경영정보학부</dd></div>
+      <div><dt>학년</dt><dd>1학년</dd></div>
+    </dl>
+  </section>
+
+  <section id="learning">
+    <h2>요즘 배우는 것</h2>
+    <p>웹사이트를 직접 만들어서 인터넷에 올리는 방법을 배우고 있어요.</p>
+    <div class="chips">
+      <span>HTML</span>
+      <span>CSS</span>
+      <span>JavaScript</span>
+      <span>GitHub</span>
+      <span>GitHub Pages</span>
+    </div>
+  </section>
+
+  <section id="works">
+    <h2>내가 만든 것</h2>
+    <a class="project" href="game.html">
+      <div class="icon">🚀</div>
+      <div>
+        <h3>어마어마한 총게임ㅋㅋ</h3>
+        <p>적 편대를 물리치는 슈팅 게임이에요. 키보드와 휴대폰 모두 할 수 있어요.</p>
+      </div>
+      <span class="go">플레이 →</span>
+    </a>
+  </section>
+
+</main>
+
+<footer>© 2026 김가윤 · 국민대학교 경영정보학부</footer>
+
+</body>
+</html>
