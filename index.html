@@ -274,6 +274,41 @@
     .project { flex-wrap: wrap; }
     .project .go { margin-left: 0; }
   }
+
+  /* 맨 위로 가기 버튼 */
+  #back-to-top {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 100;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease, transform .25s ease;
+  }
+  #back-to-top.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  #back-to-top:hover {
+    transform: translateY(-3px);
+    background: var(--accent);
+    filter: brightness(1.1);
+  }
+  @media (max-width: 560px) {
+    #back-to-top { bottom: 20px; right: 20px; width: 44px; height: 44px; font-size: 20px; }
+  }
 </style>
 </head>
 <body>
@@ -403,6 +438,24 @@
 <footer>
   <p>© 2026 김가윤 · 국민대학교 경영정보학부</p>
 </footer>
+
+<button id="back-to-top" aria-label="맨 위로 가기" title="맨 위로 가기">↑</button>
+
+<script>
+  (function () {
+    var btn = document.getElementById('back-to-top');
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 300) {
+        btn.classList.add('visible');
+      } else {
+        btn.classList.remove('visible');
+      }
+    }, { passive: true });
+    btn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  })();
+</script>
 
 </body>
 </html>
