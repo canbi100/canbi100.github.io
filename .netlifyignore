@@ -1,0 +1,25 @@
+# Netlify 공개 출력에서 제외할 파일·폴더
+# (GitHub Pages에는 영향 없음)
+
+# Kiro IDE 설정
+.kiro/
+
+# 프로젝트 내부 문서
+docs/
+
+# Node.js 의존성 (서버에서 재설치하므로 불필요)
+node_modules/
+
+# 환경 변수 파일 (절대 공개 금지)
+.env
+.env.*
+
+# Netlify Functions 소스 (정적 공개 폴더에 노출 방지)
+# netlify/ 폴더 자체는 functions로 처리되므로 별도 제외 불필요
+
+# Git 내부 파일
+.git/
+
+# OS·에디터 임시 파일
+.DS_Store
+Thumbs.db

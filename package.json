@@ -1,0 +1,10 @@
+{
+  "name": "canbi100-homepage",
+  "version": "1.0.0",
+  "private": true,
+  "description": "김가윤 개인 홈페이지 — Netlify Functions용 의존성",
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "2.49.4"
+  }
+}

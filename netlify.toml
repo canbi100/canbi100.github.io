@@ -1,0 +1,17 @@
+# Netlify 배포 설정
+# GitHub Pages(.git, README.md)와 충돌하지 않습니다.
+
+[build]
+  # 별도 빌드 명령 없음 — 정적 HTML 파일을 그대로 제공
+  command   = "npm install"
+  # 공개할 정적 파일 루트
+  publish   = "."
+  # Netlify Functions 위치
+  functions = "netlify/functions"
+
+# /api/guestbook 요청을 Netlify Functions로 라우팅
+[[redirects]]
+  from   = "/api/guestbook"
+  to     = "/.netlify/functions/guestbook"
+  status = 200
+  force  = true

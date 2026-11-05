@@ -1,0 +1,11 @@
+# Node.js 의존성 — Netlify 서버에서 재설치하므로 커밋 불필요
+node_modules/
+
+# 환경 변수 파일 — 절대 커밋 금지
+.env
+.env.*
+.env.local
+
+# OS·에디터 임시 파일
+.DS_Store
+Thumbs.db
