@@ -309,6 +309,113 @@
   @media (max-width: 560px) {
     #back-to-top { bottom: 20px; right: 20px; width: 44px; height: 44px; font-size: 20px; }
   }
+
+  /* ── 방명록 ── */
+  .gb-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .gb-row {
+    display: flex;
+    gap: 10px;
+  }
+  .gb-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 15px;
+  }
+  .gb-input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+  .gb-input::placeholder { color: var(--muted); }
+  .gb-btn {
+    flex: none;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #fff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter .15s;
+  }
+  .gb-btn:hover:not(:disabled) { filter: brightness(1.1); }
+  .gb-btn:disabled { opacity: .5; cursor: not-allowed; }
+  .gb-msg-input {
+    resize: none;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .gb-msg-input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+  .gb-msg-input::placeholder { color: var(--muted); }
+  .gb-status {
+    font-size: 14px;
+    min-height: 20px;
+  }
+  .gb-status.error  { color: #e05252; }
+  .gb-status.saving { color: var(--muted); }
+  .gb-status.done   { color: #3daa6e; }
+  .gb-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .gb-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 18px;
+  }
+  .gb-card-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .gb-nick {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--navy);
+  }
+  .gb-time {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .gb-text {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    word-break: break-all;
+  }
+  .gb-empty {
+    color: var(--muted);
+    font-size: 15px;
+    text-align: center;
+    padding: 24px 0;
+  }
+  @media (max-width: 560px) {
+    .gb-row { flex-direction: column; }
+    .gb-btn { width: 100%; }
+  }
 </style>
 </head>
 <body>
@@ -323,6 +430,7 @@
       <li><a href="#works">만든 것</a></li>
       <li><a href="#github">GitHub</a></li>
       <li><a href="#goals">목표</a></li>
+      <li><a href="#guestbook">방명록</a></li>
       <li><a href="#contact">연락</a></li>
     </ul>
   </div>
@@ -420,6 +528,39 @@
     </div>
   </section>
 
+  <section id="guestbook">
+    <h2>방명록</h2>
+    <p>별명과 한 줄 메시지를 남겨 주세요.</p>
+
+    <div class="gb-form">
+      <div class="gb-row">
+        <input
+          id="gb-nick"
+          class="gb-input"
+          type="text"
+          placeholder="별명 (2~12자)"
+          maxlength="12"
+          autocomplete="off"
+          aria-label="별명"
+        >
+        <button id="gb-submit" class="gb-btn" type="button" aria-label="방명록 남기기">남기기</button>
+      </div>
+      <textarea
+        id="gb-msg"
+        class="gb-msg-input"
+        placeholder="한 줄 메시지 (최대 100자)"
+        maxlength="100"
+        rows="2"
+        aria-label="메시지"
+      ></textarea>
+      <p id="gb-status" class="gb-status" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="gb-list" class="gb-list" aria-label="방명록 목록">
+      <p class="gb-empty">불러오는 중…</p>
+    </div>
+  </section>
+
   <section id="contact">
     <h2>연락하기</h2>
     <p>궁금한 점이 있으면 편하게 메일 보내주세요.</p>
@@ -454,6 +595,146 @@
     btn.addEventListener('click', function () {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+  })();
+</script>
+
+<script>
+  /* ── 방명록 ── */
+  (function () {
+    'use strict';
+
+    var API = '/api/guestbook';
+
+    var nickEl   = document.getElementById('gb-nick');
+    var msgEl    = document.getElementById('gb-msg');
+    var submitEl = document.getElementById('gb-submit');
+    var statusEl = document.getElementById('gb-status');
+    var listEl   = document.getElementById('gb-list');
+
+    /* ── 안전한 텍스트 출력 (XSS 방지) ── */
+    function esc(str) {
+      var d = document.createElement('div');
+      d.appendChild(document.createTextNode(String(str)));
+      return d.innerHTML;
+    }
+
+    /* ── 시각 포맷 ── */
+    function fmtTime(iso) {
+      try {
+        var d = new Date(iso);
+        return d.toLocaleString('ko-KR', {
+          year: 'numeric', month: '2-digit', day: '2-digit',
+          hour: '2-digit', minute: '2-digit'
+        });
+      } catch (_) { return iso; }
+    }
+
+    /* ── 상태 메시지 ── */
+    function setStatus(msg, type) {
+      statusEl.textContent = msg;
+      statusEl.className   = 'gb-status ' + (type || '');
+    }
+
+    /* ── 목록 렌더 ── */
+    function renderList(items) {
+      if (!items || items.length === 0) {
+        listEl.innerHTML = '<p class="gb-empty">아직 방명록이 없어요. 첫 글을 남겨보세요!</p>';
+        return;
+      }
+      listEl.innerHTML = items.map(function (item) {
+        return (
+          '<div class="gb-card">' +
+            '<div class="gb-card-header">' +
+              '<span class="gb-nick">' + esc(item.nickname) + '</span>' +
+              '<span class="gb-time">' + fmtTime(item.created_at) + '</span>' +
+            '</div>' +
+            '<p class="gb-text">' + esc(item.message) + '</p>' +
+          '</div>'
+        );
+      }).join('');
+    }
+
+    /* ── 목록 조회 ── */
+    function loadList() {
+      fetch(API)
+        .then(function (res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          renderList(data);
+        })
+        .catch(function () {
+          listEl.innerHTML = '<p class="gb-empty">목록을 불러오지 못했어요.</p>';
+        });
+    }
+
+    /* ── 클라이언트 유효성 검사 ── */
+    function clientValidate(nick, msg) {
+      var n = nick.trim();
+      var m = msg.trim();
+      if (n.length < 2 || n.length > 12) return '별명은 2~12자여야 해요.';
+      if (m.length < 1 || m.length > 100) return '메시지는 1~100자여야 해요.';
+      return null;
+    }
+
+    /* ── 글 저장 ── */
+    function submitEntry() {
+      var nick = nickEl.value;
+      var msg  = msgEl.value;
+
+      // 클라이언트 검사 (서버 요청 전)
+      var clientErr = clientValidate(nick, msg);
+      if (clientErr) {
+        setStatus(clientErr, 'error');
+        return;
+      }
+
+      // 저장 중 상태
+      submitEl.disabled = true;
+      setStatus('저장 중…', 'saving');
+
+      fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nickname: nick.trim(), message: msg.trim() })
+      })
+        .then(function (res) {
+          return res.json().then(function (data) {
+            return { status: res.status, data: data };
+          });
+        })
+        .then(function (result) {
+          if (result.status === 201 && result.data.ok) {
+            // 성공
+            nickEl.value = '';
+            msgEl.value  = '';
+            setStatus('', '');
+            loadList();
+          } else {
+            // 서버 검사 실패 (400) 또는 기타 오류
+            var msg = (result.data && result.data.error) || '저장에 실패했어요.';
+            setStatus(msg, 'error');
+          }
+        })
+        .catch(function () {
+          setStatus('저장에 실패했어요. 잠시 후 다시 시도해 주세요.', 'error');
+        })
+        .finally(function () {
+          submitEl.disabled = false;
+        });
+    }
+
+    /* ── 이벤트 연결 ── */
+    submitEl.addEventListener('click', submitEntry);
+
+    // Enter 키로 제출 (textarea는 Shift+Enter로 줄바꿈 유지)
+    nickEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); submitEntry(); }
+    });
+
+    /* ── 초기 목록 로드 ── */
+    loadList();
   })();
 </script>
 

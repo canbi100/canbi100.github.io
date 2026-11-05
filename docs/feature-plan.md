@@ -1,7 +1,20 @@
 # 방명록 기능 명세
 
 > 작성일: 2026-11-05  
-> 상태: 명세 확정 · 미구현
+> 상태: 명세 확정 · Netlify 배포 완료 · 방명록 미구현
+
+---
+
+## 0. 배포 정보
+
+| 항목 | 값 |
+|---|---|
+| Netlify 프로젝트 이름 | `lucky-dieffenbachia-ba8e73` |
+| Netlify URL | https://lucky-dieffenbachia-ba8e73.netlify.app |
+| GitHub Pages URL | https://canbi100.github.io/ |
+| GitHub 저장소 | https://github.com/canbi100/canbi100.github.io |
+| 배포 브랜치 | `main` |
+| 배포 확인일 | 2026-11-05 |
 
 ---
 

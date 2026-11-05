@@ -9,3 +9,6 @@ node_modules/
 # OS·에디터 임시 파일
 .DS_Store
 Thumbs.db
+
+# Local Netlify folder
+.netlify
