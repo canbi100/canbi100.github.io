@@ -63,40 +63,40 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
   :root {
-    --bg: #f7f5f0;
+    --bg: #fbf6f5;
     --surface: #ffffff;
     --text: #1d2233;
     --muted: #6b7185;
-    --line: #e6e3db;
-    --navy: #1f2d5c;
-    --accent: #ff8a3d;
-    --accent-soft: #fff0e5;
-    --chip: #eef1f8;
+    --line: #efe1df;
+    --navy: #a3142a;
+    --accent: #e5383b;
+    --accent-soft: #fdeceb;
+    --chip: #fbe7e7;
   }
   /* 야간모드: 시스템 설정을 따르되, 버튼으로 직접 바꾼 값이 있으면 그걸 우선 */
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #12141c;
-      --surface: #1b1e29;
+      --bg: #151214;
+      --surface: #211b1e;
       --text: #eceef4;
       --muted: #9a9fb2;
-      --line: #2c3040;
-      --navy: #9fb3ff;
-      --accent: #ff9a55;
-      --accent-soft: #33241a;
-      --chip: #252a3a;
+      --line: #3a2d32;
+      --navy: #ff9aa2;
+      --accent: #ff5a5f;
+      --accent-soft: #3a1c20;
+      --chip: #33222a;
     }
   }
   :root[data-theme="dark"] {
-    --bg: #12141c;
-    --surface: #1b1e29;
+    --bg: #151214;
+    --surface: #211b1e;
     --text: #eceef4;
     --muted: #9a9fb2;
-    --line: #2c3040;
-    --navy: #9fb3ff;
-    --accent: #ff9a55;
-    --accent-soft: #33241a;
-    --chip: #252a3a;
+    --line: #3a2d32;
+    --navy: #ff9aa2;
+    --accent: #ff5a5f;
+    --accent-soft: #3a1c20;
+    --chip: #33222a;
   }
   body { transition: background-color .3s, color .3s; }
 
@@ -178,7 +178,7 @@
     height: 128px;
     border-radius: 50%;
     background: var(--accent);
-    color: #1d1206;
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -313,6 +313,28 @@
     border-radius: 50%;
     margin-right: 6px;
     vertical-align: middle;
+  }
+
+  /* 좋아하는 것 */
+  .likes-title { margin: 24px 0 10px !important; font-weight: 700; }
+  .likes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .like-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 18px;
+    transition: transform .2s, border-color .2s;
+  }
+  .like-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .like-icon { display: block; font-size: 28px; margin-bottom: 6px; }
+  .like-card > b { font-size: 16px; }
+  .like-card p { margin: 4px 0 0; font-size: 14px; color: var(--muted); line-height: 1.6; }
+  @media (max-width: 560px) {
+    .likes { grid-template-columns: 1fr; }
   }
 
   /* 목표 카드 */
@@ -461,6 +483,58 @@
   }
 
 
+  /* ── 까몽이 여기저기 ── */
+  .mini-cat { width: 40px; height: 40px; flex: none; }
+  :root[data-theme="dark"] .mini-cat { filter: drop-shadow(0 0 4px rgba(255,255,255,.35)); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .mini-cat { filter: drop-shadow(0 0 4px rgba(255,255,255,.35)); }
+  }
+  .avatar-wrap { position: relative; flex: none; }
+  .avatar-cat {
+    position: absolute;
+    right: -10px;
+    bottom: -6px;
+    animation: peek 3s ease-in-out infinite;
+  }
+  .avatar-cat .mini-cat { width: 52px; height: 52px; }
+  @keyframes peek { 0%,100% { transform: rotate(0); } 50% { transform: rotate(-10deg) translateY(-3px); } }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .btn {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    transition: transform .2s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-main { background: var(--accent); color: #fff; }
+  .btn-sub { background: var(--chip); color: var(--navy); }
+  nav ul a.nav-gb {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .gb-box {
+    background: var(--accent-soft);
+    border: 2px solid var(--accent);
+    border-radius: 20px;
+    padding: 24px 22px;
+  }
+  .gb-hello { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .gb-hello .mini-cat { width: 54px; height: 54px; animation: peek 3s ease-in-out infinite; }
+  .gb-hello p { margin: 0; }
+  .gb-hello small { color: var(--muted); }
+  .foot-cat { display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .foot-cat .mini-cat { width: 32px; height: 32px; }
+  @media (max-width: 560px) {
+    .hero-cta { justify-content: center; }
+    .gb-box { padding: 20px 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .avatar-cat, .gb-hello .mini-cat { animation: none; }
+  }
+
   /* ── 방명록 ── */
   .gb-form {
     display: flex;
@@ -571,6 +645,26 @@
 </head>
 <body>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="kamong-face" viewBox="20 8 80 78">
+    <path d="M24 44 L30 12 L52 32 Z" fill="#26232b"/>
+    <path d="M96 44 L90 12 L68 32 Z" fill="#26232b"/>
+    <path d="M30 38 L33 21 L45 32 Z" fill="#8a5a44"/>
+    <path d="M90 38 L87 21 L75 32 Z" fill="#8a5a44"/>
+    <ellipse cx="60" cy="52" rx="38" ry="31" fill="#26232b"/>
+    <ellipse cx="44" cy="52" rx="8" ry="10" fill="#fff"/>
+    <ellipse cx="45" cy="54" rx="5" ry="7" fill="#1a1720"/>
+    <circle cx="47" cy="50" r="2.2" fill="#fff"/>
+    <ellipse cx="76" cy="52" rx="8" ry="10" fill="#fff"/>
+    <ellipse cx="75" cy="54" rx="5" ry="7" fill="#1a1720"/>
+    <circle cx="77" cy="50" r="2.2" fill="#fff"/>
+    <ellipse cx="33" cy="66" rx="6" ry="3.5" fill="#ff8fa8" opacity=".75"/>
+    <ellipse cx="87" cy="66" rx="6" ry="3.5" fill="#ff8fa8" opacity=".75"/>
+    <path d="M56 63 L64 63 L60 67 Z" fill="#ff8fa8"/>
+    <path d="M60 67 Q56 72 52 69 M60 67 Q64 72 68 69" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+  </symbol>
+</svg>
+
 <nav aria-label="주 메뉴">
   <div class="inner">
     <a class="logo" href="#top">김가윤<span>.</span></a>
@@ -582,7 +676,7 @@
       <li><a href="#works">만든 것</a></li>
       <li><a href="#github">GitHub</a></li>
       <li><a href="#goals">목표</a></li>
-      <li><a href="#guestbook">방명록</a></li>
+      <li><a href="#guestbook" class="nav-gb">💌 방명록</a></li>
       <li><a href="#contact">연락</a></li>
     </ul>
     <button id="theme-toggle" class="theme-toggle" type="button" aria-label="야간모드 켜기" title="야간모드 켜기">🌙</button>
@@ -593,11 +687,18 @@
 <main id="top">
 
   <div class="hero">
-    <div class="avatar" aria-label="김가윤 프로필">가윤</div>
+    <div class="avatar-wrap">
+      <div class="avatar" aria-label="김가윤 프로필">가윤</div>
+      <span class="avatar-cat"><svg class="mini-cat" aria-hidden="true"><use href="#kamong-face"/></svg></span>
+    </div>
     <div>
       <p class="hello">안녕하세요 👋</p>
       <h1>저는 김가윤입니다</h1>
       <p class="school">국민대학교 경영정보학부 · 1학년</p>
+      <div class="hero-cta">
+        <a class="btn btn-main" href="#guestbook">💌 방명록 남기기</a>
+        <a class="btn btn-sub" href="game.html">🎮 게임 하러 가기</a>
+      </div>
     </div>
   </div>
 
@@ -611,6 +712,25 @@
       <div><dt>전공</dt><dd>경영정보학부</dd></div>
       <div><dt>학년</dt><dd>1학년</dd></div>
     </dl>
+
+    <p class="likes-title">제가 좋아하는 것들이에요 💛</p>
+    <div class="likes">
+      <div class="like-card">
+        <span class="like-icon" aria-hidden="true">🐈‍⬛</span>
+        <b>고양이</b>
+        <p>고양이를 정말 좋아해요. 그래서 이 사이트에도 고양이 <b>까몽이</b>를 데려왔어요! 왼쪽 아래에서 한번 눌러보세요.</p>
+      </div>
+      <div class="like-card">
+        <span class="like-icon" aria-hidden="true">🍰</span>
+        <b>맛있는 음식</b>
+        <p>먹는 걸 좋아해요. 맛있는 걸 먹으면 하루가 행복해져요.</p>
+      </div>
+      <div class="like-card">
+        <span class="like-icon" aria-hidden="true">👗</span>
+        <b>옷</b>
+        <p>옷 구경하고 스타일링하는 걸 좋아해요. 사람들이 왜 어떤 옷을 고르는지도 궁금해요.</p>
+      </div>
+    </div>
   </section>
 
   <section id="learning">
@@ -656,7 +776,7 @@
         <h4>조작법</h4>
         <ul>
           <li><b>컴퓨터</b>: <kbd>←</kbd> <kbd>→</kbd> (또는 <kbd>A</kbd> <kbd>D</kbd>)로 이동, <kbd>Space</kbd>로 발사</li>
-          <li><b>휴대폰</b>: 화면 아래 <b>◀ ▶</b> 버튼으로 이동, <b>발사</b> 버튼으로 쏘기</li>
+          <li><b>휴대폰</b>: 왼쪽 아래 <b>◀ ▶</b> 버튼으로 이동, 오른쪽 아래 빨간 <b>발사</b> 버튼으로 쏘기</li>
           <li>시작·다시 시작은 <kbd>Enter</kbd>, <kbd>Space</kbd>, 또는 화면 터치</li>
         </ul>
         <h4>규칙</h4>
@@ -708,8 +828,12 @@
   </section>
 
   <section id="guestbook">
-    <h2>방명록</h2>
-    <p>별명과 한 줄 메시지를 남겨 주세요.</p>
+    <div class="gb-box">
+    <h2>💌 방명록</h2>
+    <div class="gb-hello">
+      <svg class="mini-cat" aria-hidden="true"><use href="#kamong-face"/></svg>
+      <p>까몽이가 편지를 기다리고 있어요! 별명과 한 줄 메시지를 남겨 주세요.<br><small>남긴 글은 모두에게 보여요 😊</small></p>
+    </div>
 
     <div class="gb-form">
       <div class="gb-row">
@@ -738,6 +862,7 @@
     <div id="gb-list" class="gb-list" aria-label="방명록 목록">
       <p class="gb-empty">불러오는 중…</p>
     </div>
+  </div>
   </section>
 
   <section id="contact">
@@ -756,6 +881,7 @@
 </main>
 
 <footer>
+  <p class="foot-cat"><svg class="mini-cat" aria-hidden="true"><use href="#kamong-face"/></svg> 까몽이랑 기다릴게요. 또 놀러 와요!</p>
   <p>© 2026 김가윤 · 국민대학교 경영정보학부</p>
 </footer>
 
@@ -843,7 +969,7 @@
     var cat = document.getElementById('cat');
     var bubble = document.getElementById('cat-bubble');
     var lines = [
-      '안녕! 난 까몽이야 🐾',
+      '헤헤 간지러워 🐾',
       '여기까지 와줘서 고마워냥!',
       '<a href="#guestbook">방명록</a>에 한 줄 남겨줄래? 💌',
       '오른쪽 위 🌙 누르면 밤 모드가 돼!',
@@ -851,15 +977,22 @@
       '쓰담쓰담… 기분 좋다옹 😺'
     ];
     var i = 0, timer = null;
-    cat.addEventListener('click', function () {
-      bubble.innerHTML = lines[i];
-      i = (i + 1) % lines.length;
+    function say(html, ms) {
+      bubble.innerHTML = html;
       bubble.classList.add('show');
       cat.classList.remove('jump');
       void cat.offsetWidth;
       cat.classList.add('jump');
       clearTimeout(timer);
-      timer = setTimeout(function () { bubble.classList.remove('show'); }, 3500);
+      timer = setTimeout(function () { bubble.classList.remove('show'); }, ms);
+    }
+    /* 처음 들어오면 인사하기 */
+    setTimeout(function () {
+      say('안농! 👋 난 까몽이야.<br>놀러 와줘서 고마워냥 🐾', 5000);
+    }, 800);
+    cat.addEventListener('click', function () {
+      say(lines[i], 3500);
+      i = (i + 1) % lines.length;
     });
   })();
 </script>

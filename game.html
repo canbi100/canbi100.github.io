@@ -49,11 +49,20 @@
     border-radius: 8px;
     image-rendering: pixelated;
   }
+  /* 터치 버튼: 방향키는 왼쪽 아래, 발사는 오른쪽 아래 */
   #touch {
     display: none;
-    gap: 12px;
-    margin-top: 10px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 14px calc(14px + env(safe-area-inset-bottom));
+    pointer-events: none;
   }
+  #touch .pad { display: flex; gap: 10px; }
+  #touch button { pointer-events: auto; }
   #touch button {
     width: 84px;
     height: 60px;
@@ -65,8 +74,17 @@
     color: #fff;
   }
   #touch button:active { background: #4a52a0; }
+  #touch #btnFire {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: #ff4d6d;
+    font-size: 18px;
+  }
+  #touch #btnFire:active { background: #ff7a92; }
   @media (pointer: coarse) {
     #touch { display: flex; }
+    #wrap { height: calc(100% - 112px); }
   }
 </style>
 </head>
@@ -74,9 +92,11 @@
 <div id="wrap">
   <canvas id="game" width="480" height="640"></canvas>
   <div id="touch">
-    <button id="btnLeft">◀</button>
+    <div class="pad">
+      <button id="btnLeft">◀</button>
+      <button id="btnRight">▶</button>
+    </div>
     <button id="btnFire">발사</button>
-    <button id="btnRight">▶</button>
   </div>
 </div>
 
@@ -89,7 +109,7 @@ const W = canvas.width, H = canvas.height;
 // 화면 크기에 맞게 게임 화면 크기 조절
 function resize() {
   const isTouch = matchMedia('(pointer: coarse)').matches;
-  const scale = Math.min((innerWidth - 8) / W, (innerHeight - (isTouch ? 90 : 16)) / H, 1.4);
+  const scale = Math.min((innerWidth - 8) / W, (innerHeight - (isTouch ? 124 : 16)) / H, 1.4);
   canvas.style.width = (W * scale) + 'px';
   canvas.style.height = (H * scale) + 'px';
 }
