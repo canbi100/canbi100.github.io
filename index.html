@@ -275,6 +275,46 @@
   .project p { margin: 0; color: var(--muted); font-size: 14px; }
   .project .go { margin-left: auto; color: var(--accent); font-weight: 700; white-space: nowrap; }
 
+  /* 게임 방법 */
+  .howto {
+    margin-top: 12px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 0 18px;
+  }
+  .howto summary {
+    cursor: pointer;
+    padding: 14px 0;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .howto[open] summary { border-bottom: 1px solid var(--line); }
+  .howto-body { padding: 4px 0 14px; }
+  .howto h4 { margin: 14px 0 6px; font-size: 15px; }
+  .howto ul { margin: 0; padding-left: 20px; font-size: 15px; }
+  .howto li { margin: 3px 0; }
+  .howto kbd {
+    display: inline-block;
+    min-width: 24px;
+    padding: 1px 7px;
+    border: 1px solid var(--line);
+    border-bottom-width: 2px;
+    border-radius: 6px;
+    background: var(--chip);
+    font: inherit;
+    font-size: 13px;
+    text-align: center;
+  }
+  .howto .dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
   /* 목표 카드 */
   .goals-list {
     display: flex;
@@ -351,6 +391,75 @@
   @media (max-width: 560px) {
     #back-to-top { bottom: 20px; right: 20px; width: 44px; height: 44px; font-size: 20px; }
   }
+
+  /* ── 귀여운 고양이 '까몽이' (직접 그린 그림) ── */
+  #cat {
+    position: fixed;
+    left: 20px;
+    bottom: 16px;
+    z-index: 100;
+    width: 88px;
+    height: 88px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,.18));
+    transition: transform .2s;
+  }
+  #cat:hover { transform: translateY(-4px) rotate(-4deg); }
+  #cat svg { width: 100%; height: 100%; overflow: visible; }
+  :root[data-theme="dark"] #cat { filter: drop-shadow(0 0 6px rgba(255,255,255,.35)); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) #cat { filter: drop-shadow(0 0 6px rgba(255,255,255,.35)); }
+  }
+  .cat-tail { transform-origin: 88px 92px; animation: wag 1.6s ease-in-out infinite; }
+  .cat-eye { transform-box: fill-box; transform-origin: center; animation: blink 4s infinite; }
+  @keyframes wag { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(14deg); } }
+  @keyframes blink { 0%,92%,100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+  #cat.jump { animation: hop .45s ease; }
+  @keyframes hop { 0%,100% { transform: translateY(0); } 40% { transform: translateY(-16px); } }
+  #cat-bubble {
+    position: fixed;
+    left: 20px;
+    bottom: 112px;
+    z-index: 100;
+    max-width: 220px;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 10px 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    box-shadow: 0 6px 18px rgba(0,0,0,.12);
+    opacity: 0;
+    transform: translateY(6px);
+    pointer-events: none;
+    transition: opacity .2s, transform .2s;
+  }
+  #cat-bubble::after {
+    content: "";
+    position: absolute;
+    left: 34px;
+    bottom: -7px;
+    width: 12px;
+    height: 12px;
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    transform: rotate(45deg);
+  }
+  #cat-bubble.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  #cat-bubble a { color: var(--accent); font-weight: 700; }
+  @media (max-width: 560px) {
+    #cat { width: 66px; height: 66px; left: 12px; bottom: 12px; }
+    #cat-bubble { left: 12px; bottom: 86px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cat-tail, .cat-eye, #cat.jump { animation: none; }
+  }
+
 
   /* ── 방명록 ── */
   .gb-form {
@@ -540,6 +649,31 @@
       </div>
       <span class="go" aria-label="게임 플레이하기">플레이 →</span>
     </a>
+
+    <details class="howto">
+      <summary>🎮 게임 방법 보기</summary>
+      <div class="howto-body">
+        <h4>조작법</h4>
+        <ul>
+          <li><b>컴퓨터</b>: <kbd>←</kbd> <kbd>→</kbd> (또는 <kbd>A</kbd> <kbd>D</kbd>)로 이동, <kbd>Space</kbd>로 발사</li>
+          <li><b>휴대폰</b>: 화면 아래 <b>◀ ▶</b> 버튼으로 이동, <b>발사</b> 버튼으로 쏘기</li>
+          <li>시작·다시 시작은 <kbd>Enter</kbd>, <kbd>Space</kbd>, 또는 화면 터치</li>
+        </ul>
+        <h4>규칙</h4>
+        <ul>
+          <li>목숨은 <b>3개</b>예요. 적 총알이나 적에게 부딪히면 하나씩 줄어요.</li>
+          <li>적을 모두 물리치면 <b>다음 스테이지</b>로! 갈수록 적이 빨라지고 더 자주 공격해요.</li>
+          <li>최고 점수는 내 기기에 저장돼서 다음에 와도 남아 있어요.</li>
+        </ul>
+        <h4>점수표</h4>
+        <ul>
+          <li><span class="dot" style="background:#3ee0d0"></span>하늘색 적 <b>50점</b></li>
+          <li><span class="dot" style="background:#e85cff"></span>보라색 적 <b>80점</b></li>
+          <li><span class="dot" style="background:#ffa53a"></span>주황색 대장 <b>150점</b> (두 번 맞혀야 해요. 한 번 맞으면 빨갛게 변해요)</li>
+          <li>💥 나에게 <b>돌진해 오는 적</b>을 맞히면 점수 <b>2배</b>!</li>
+        </ul>
+      </div>
+    </details>
   </section>
 
   <section id="github">
@@ -627,6 +761,38 @@
 
 <button id="back-to-top" aria-label="맨 위로 가기" title="맨 위로 가기">↑</button>
 
+<!-- 귀여운 고양이 '까몽이': 누르면 말해요 -->
+<div id="cat-bubble" role="status" aria-live="polite"></div>
+<button id="cat" type="button" aria-label="고양이 까몽이 쓰다듬기" title="눌러봐!">
+  <svg viewBox="0 0 120 120" aria-hidden="true">
+    <path class="cat-tail" d="M88 92 C108 90 112 70 102 62 C98 59 94 63 98 67 C103 73 98 84 86 84 Z" fill="#26232b"/>
+    <ellipse cx="60" cy="92" rx="30" ry="22" fill="#26232b"/>
+    <ellipse cx="48" cy="111" rx="8" ry="5" fill="#34303a"/>
+    <ellipse cx="72" cy="111" rx="8" ry="5" fill="#34303a"/>
+    <path d="M24 44 L30 12 L52 32 Z" fill="#26232b"/>
+    <path d="M96 44 L90 12 L68 32 Z" fill="#26232b"/>
+    <path d="M30 38 L33 21 L45 32 Z" fill="#8a5a44"/>
+    <path d="M90 38 L87 21 L75 32 Z" fill="#8a5a44"/>
+    <ellipse cx="60" cy="52" rx="38" ry="31" fill="#26232b"/>
+    <g class="cat-eye">
+      <ellipse cx="44" cy="52" rx="8" ry="10" fill="#fff"/>
+      <ellipse cx="45" cy="54" rx="5" ry="7" fill="#1a1720"/>
+      <circle cx="47" cy="50" r="2.2" fill="#fff"/>
+    </g>
+    <g class="cat-eye">
+      <ellipse cx="76" cy="52" rx="8" ry="10" fill="#fff"/>
+      <ellipse cx="75" cy="54" rx="5" ry="7" fill="#1a1720"/>
+      <circle cx="77" cy="50" r="2.2" fill="#fff"/>
+    </g>
+    <ellipse cx="33" cy="66" rx="6" ry="3.5" fill="#ff8fa8" opacity=".75"/>
+    <ellipse cx="87" cy="66" rx="6" ry="3.5" fill="#ff8fa8" opacity=".75"/>
+    <path d="M56 63 L64 63 L60 67 Z" fill="#ff8fa8"/>
+    <path d="M60 67 Q56 72 52 69 M60 67 Q64 72 68 69" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    <path d="M60 104 C54 98 50 94 54 90 C57 88 60 91 60 93 C60 91 63 88 66 90 C70 94 66 98 60 104 Z" fill="#8a5a44"/>
+  </svg>
+</button>
+
+
 <script>
   (function () {
     var btn = document.getElementById('back-to-top');
@@ -670,6 +836,34 @@
     render();
   })();
 </script>
+
+<script>
+  /* ── 고양이 까몽이 ── */
+  (function () {
+    var cat = document.getElementById('cat');
+    var bubble = document.getElementById('cat-bubble');
+    var lines = [
+      '안녕! 난 까몽이야 🐾',
+      '여기까지 와줘서 고마워냥!',
+      '<a href="#guestbook">방명록</a>에 한 줄 남겨줄래? 💌',
+      '오른쪽 위 🌙 누르면 밤 모드가 돼!',
+      '<a href="game.html">총게임</a> 해봤어? 최고 점수 도전! 🚀',
+      '쓰담쓰담… 기분 좋다옹 😺'
+    ];
+    var i = 0, timer = null;
+    cat.addEventListener('click', function () {
+      bubble.innerHTML = lines[i];
+      i = (i + 1) % lines.length;
+      bubble.classList.add('show');
+      cat.classList.remove('jump');
+      void cat.offsetWidth;
+      cat.classList.add('jump');
+      clearTimeout(timer);
+      timer = setTimeout(function () { bubble.classList.remove('show'); }, 3500);
+    });
+  })();
+</script>
+
 
 <script>
   /* ── 방명록 ── */
