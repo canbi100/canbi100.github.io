@@ -159,49 +159,89 @@ function beep(freq, dur, type, vol) {
   } catch (e) {}
 }
 
-// ===== 도트 그림 (# = 몸체, r/o = 포인트 색) =====
-const SPRITES = {
-  player: { map: [
-    "     #     ",
-    "     #     ",
-    "    ###    ",
-    "    #r#    ",
-    " #  ###  # ",
-    " # ##### # ",
-    "###########",
-    "## ## ## ##",
-    "#   ###   #"
-  ], col: { '#': '#dfe8ff', 'r': '#ff4d6d' } },
-  a: { map: [
-    "   ###   ",
-    "  #o#o#  ",
-    " ####### ",
-    "## ### ##",
-    "#   #   #",
-    "   # #   ",
-    "  #   #  "
-  ], col: { '#': '#3ee0d0', 'o': '#ffffff' } },
-  b: { map: [
+// ===== 도트 그림: 전부 고양이! (# = 털, 다른 글자 = 무늬/눈/코) =====
+// 나: 까만 고양이 까몽이
+const PLAYER_MAP = [
+  "#         #",
+  "##       ##",
+  "#e#######e#",
+  "###########",
+  "#ok#####ko#",
+  "#####p#####",
+  "#c##w#w##c#",
+  " ######### ",
+  "  ##   ##  "
+];
+// 적 고양이 3종류 (모양이 다 달라요)
+const ENEMY_MAPS = {
+  a: [            // 뾰족귀 날쌘 고양이
     "#       #",
-    "##  #  ##",
+    "##     ##",
+    "#s#####s#",
+    "#ok#s#ko#",
+    "s###p###s",
+    " ####### ",
+    "  #   #  "
+  ],
+  b: [            // 동글동글 통통 고양이
+    "##     ##",
     "#########",
-    " ##o#o## ",
-    "  #####  ",
-    "   # #   "
-  ], col: { '#': '#e85cff', 'o': '#ffffff' } },
-  c: { map: [
-    "  #     #  ",
-    "   #   #   ",
-    "  #######  ",
-    " ##o###o## ",
+    "##k###k##",
+    "#m##p##m#",
+    "#########",
+    " ##   ## "
+  ],
+  c: [            // 왕관 쓴 대장 고양이
+    "   y y y   ",
+    "#  yyyyy  #",
     "###########",
-    "# ####### #",
-    "#  #   #  #",
-    "   ## ##   "
-  ], col: { '#': '#ffa53a', 'o': '#ffffff' } }
+    "#ok##s##ko#",
+    "##s#####s##",
+    "#m###p###m#",
+    "###########",
+    " ##     ## "
+  ]
 };
-// 한 번 맞은 대장 적은 빨간색
-SPRITES.c2 = { map: SPRITES.c.map, col: { '#': '#ff5a5a', 'o': '#ffffff' } };
+// 털 색깔: 같은 종류여도 고양이마다 털색이 달라요
+const COATS = {
+  a: [
+    { '#': '#b8bcc8', s: '#8a8f9e' },   // 회색 고양이
+    { '#': '#ffa53a', s: '#d9731a' },   // 치즈 고양이
+    { '#': '#f4f1ea', s: '#c9c2b4' }    // 흰 고양이
+  ],
+  b: [
+    { '#': '#f3d9a8', m: '#ff9fb0' },   // 크림 고양이
+    { '#': '#9b6b4a', m: '#ffb3c1' },   // 갈색 고양이
+    { '#': '#efe3cf', m: '#5a4636' }    // 샴 고양이
+  ],
+  c: [
+    { '#': '#ffffff', s: '#ff9a3c', m: '#3a3035' },   // 삼색 대장
+    { '#': '#3a3a48', s: '#ffffff', m: '#ff9fb0' }    // 턱시도 대장
+  ]
+};
+const FACE = { o: '#ffffff', k: '#1a1720', p: '#ff8fa8', w: '#ffffff', y: '#ffd84a', e: '#8a5a44', c: '#ff8fa8' };
+function makeSprite(map, coat) { return { map, col: Object.assign({}, FACE, coat) }; }
+const SPRITES = { player: makeSprite(PLAYER_MAP, { '#': '#3b3545' }) };
+const ENEMY_SPRITES = {};
+for (const t in ENEMY_MAPS) ENEMY_SPRITES[t] = COATS[t].map(c => makeSprite(ENEMY_MAPS[t], c));
+// 한 번 맞은 대장 고양이는 빨갛게 화가 나요
+const ANGRY = COATS.c.map(c => makeSprite(ENEMY_MAPS.c, Object.assign({}, c, { '#': '#ff6b6b' })));
+
+// 내 총알: 고양이 발바닥 🐾
+function drawPaw(x, y) {
+  ctx.fillStyle = '#ffb3c7';
+  ctx.beginPath(); ctx.arc(x, y + 2, 3.2, 0, Math.PI * 2); ctx.fill();
+  [[-3.6, -2.6], [0, -4.6], [3.6, -2.6]].forEach(([dx, dy]) => {
+    ctx.beginPath(); ctx.arc(x + dx, y + dy, 1.7, 0, Math.PI * 2); ctx.fill();
+  });
+}
+// 적 총알: 털실 공
+function drawYarn(x, y) {
+  ctx.fillStyle = '#ff5a8a';
+  ctx.beginPath(); ctx.arc(x, y, 3.5, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = '#ffd1e0'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(x - 1, y - 1, 2, 0.2, 2.6); ctx.stroke();
+}
 
 function drawSprite(s, cx, cy, sc) {
   const m = s.map, h = m.length, w = m[0].length;
@@ -232,7 +272,6 @@ const stars = Array.from({ length: 90 }, () => ({
 }));
 
 const POINTS = { a: 50, b: 80, c: 150 };
-const COLORS = { a: '#3ee0d0', b: '#e85cff', c: '#ffa53a' };
 function sizeOf(e) { return e.type === 'c' ? { w: 33, h: 24 } : { w: 27, h: 21 }; }
 
 function startGame() {
@@ -260,6 +299,7 @@ function spawnWave() {
       const fromLeft = idx % 2 === 0;
       enemies.push({
         type,
+        coat: Math.floor(Math.random() * COATS[type].length),
         hp: type === 'c' ? 2 : 1,
         homeX: W / 2 + (i - (count - 1) / 2) * 38,
         homeY: 80 + r * 34,
@@ -396,7 +436,7 @@ function update(dt) {
         e.hp--;
         if (e.hp <= 0) {
           score += scoreFor(e);
-          explode(e.x, e.y, COLORS[e.type], 18);
+          explode(e.x, e.y, COATS[e.type][e.coat]['#'], 18);
           beep(160, 0.2, 'triangle', 0.05);
         } else {
           beep(600, 0.05, 'square', 0.03);
@@ -423,7 +463,7 @@ function update(dt) {
         if (Math.abs(e.x - player.x) < 26 && Math.abs(e.y - player.y) < 22) {
           e.hp = 0;
           score += scoreFor(e);
-          explode(e.x, e.y, COLORS[e.type], 18);
+          explode(e.x, e.y, COATS[e.type][e.coat]['#'], 18);
           hitPlayer();
           break;
         }
@@ -459,16 +499,14 @@ function draw() {
 
   if (state !== 'title') {
     enemies.forEach(e => {
-      const s = (e.type === 'c' && e.hp === 1) ? SPRITES.c2 : SPRITES[e.type];
+      const s = (e.type === 'c' && e.hp === 1) ? ANGRY[e.coat] : ENEMY_SPRITES[e.type][e.coat];
       drawSprite(s, e.x, e.y, 3);
     });
     const blink = player.safe > 0 && Math.floor(time * 10) % 2 === 0;
     if (state === 'play' && player.dead <= 0 && !blink) drawSprite(SPRITES.player, player.x, player.y, 3);
 
-    ctx.fillStyle = '#fff6a0';
-    shots.forEach(b => ctx.fillRect(b.x - 1.5, b.y - 8, 3, 12));
-    ctx.fillStyle = '#ff5a5a';
-    enemyShots.forEach(b => ctx.fillRect(b.x - 2, b.y - 4, 4, 8));
+    shots.forEach(b => drawPaw(b.x, b.y));
+    enemyShots.forEach(b => drawYarn(b.x, b.y));
   }
 
   particles.forEach(p => {
@@ -494,7 +532,7 @@ function draw() {
   if (state === 'title') {
     centerText('어마어마한 총게임ㅋㅋ', 230, 36, '#ffa53a');
     centerText('← → : 이동    스페이스바 : 발사', 300, 16, '#dfe8ff');
-    centerText('돌격 중인 적을 맞히면 점수 2배!', 330, 16, '#3ee0d0');
+    centerText('돌격하는 고양이를 맞히면 점수 2배! 🐾', 330, 16, '#3ee0d0');
     if (Math.floor(time * 2) % 2 === 0) centerText('Enter 키 또는 화면을 눌러 시작', 400, 18, '#fff');
     centerText('만든 사람', 520, 14, '#8a90b0');
     centerText('국민대 경영정보 1학년 김가윤', 548, 18, '#ffa53a');
