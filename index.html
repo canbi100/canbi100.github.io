@@ -50,75 +50,33 @@
 }
 </script>
 
-<script>
-  /* 저장된 야간모드 설정을 화면 그리기 전에 먼저 적용 (깜빡임 방지) */
-  (function () {
-    try {
-      var t = localStorage.getItem('theme');
-      if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
-    } catch (e) {}
-  })();
-</script>
 <title>김가윤 — 국민대학교 경영정보학부 | 개인 소개</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
   :root {
-    --bg: #fbf6f5;
+    --bg: #f7f5f0;
     --surface: #ffffff;
     --text: #1d2233;
     --muted: #6b7185;
-    --line: #efe1df;
-    --navy: #a3142a;
-    --accent: #e5383b;
-    --accent-soft: #fdeceb;
-    --chip: #fbe7e7;
+    --line: #e6e3db;
+    --navy: #1f2d5c;
+    --accent: #ff8a3d;
+    --accent-soft: #fff0e5;
+    --chip: #eef1f8;
   }
-  /* 야간모드: 시스템 설정을 따르되, 버튼으로 직접 바꾼 값이 있으면 그걸 우선 */
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #151214;
-      --surface: #211b1e;
+    :root {
+      --bg: #12141c;
+      --surface: #1b1e29;
       --text: #eceef4;
       --muted: #9a9fb2;
-      --line: #3a2d32;
-      --navy: #ff9aa2;
-      --accent: #ff5a5f;
-      --accent-soft: #3a1c20;
-      --chip: #33222a;
+      --line: #2c3040;
+      --navy: #9fb3ff;
+      --accent: #ff9a55;
+      --accent-soft: #33241a;
+      --chip: #252a3a;
     }
   }
-  :root[data-theme="dark"] {
-    --bg: #151214;
-    --surface: #211b1e;
-    --text: #eceef4;
-    --muted: #9a9fb2;
-    --line: #3a2d32;
-    --navy: #ff9aa2;
-    --accent: #ff5a5f;
-    --accent-soft: #3a1c20;
-    --chip: #33222a;
-  }
-  body { transition: background-color .3s, color .3s; }
-
-  /* 야간모드 버튼 */
-  .theme-toggle {
-    flex: none;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: 1px solid var(--line);
-    background: var(--surface);
-    color: var(--text);
-    font-size: 18px;
-    line-height: 1;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform .2s;
-  }
-  .theme-toggle:hover { transform: rotate(-15deg) scale(1.08); }
-  nav .right { display: flex; align-items: center; gap: 14px; }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
@@ -178,7 +136,7 @@
     height: 128px;
     border-radius: 50%;
     background: var(--accent);
-    color: #fff;
+    color: #1d1206;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -275,68 +233,6 @@
   .project p { margin: 0; color: var(--muted); font-size: 14px; }
   .project .go { margin-left: auto; color: var(--accent); font-weight: 700; white-space: nowrap; }
 
-  /* 게임 방법 */
-  .howto {
-    margin-top: 12px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 0 18px;
-  }
-  .howto summary {
-    cursor: pointer;
-    padding: 14px 0;
-    font-weight: 700;
-    color: var(--navy);
-  }
-  .howto[open] summary { border-bottom: 1px solid var(--line); }
-  .howto-body { padding: 4px 0 14px; }
-  .howto h4 { margin: 14px 0 6px; font-size: 15px; }
-  .howto ul { margin: 0; padding-left: 20px; font-size: 15px; }
-  .howto li { margin: 3px 0; }
-  .howto kbd {
-    display: inline-block;
-    min-width: 24px;
-    padding: 1px 7px;
-    border: 1px solid var(--line);
-    border-bottom-width: 2px;
-    border-radius: 6px;
-    background: var(--chip);
-    font: inherit;
-    font-size: 13px;
-    text-align: center;
-  }
-  .howto .dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-right: 6px;
-    vertical-align: middle;
-  }
-
-  /* 좋아하는 것 */
-  .likes-title { margin: 24px 0 10px !important; font-weight: 700; }
-  .likes {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-  .like-card {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 16px 18px;
-    transition: transform .2s, border-color .2s;
-  }
-  .like-card:hover { transform: translateY(-2px); border-color: var(--accent); }
-  .like-icon { display: block; font-size: 28px; margin-bottom: 6px; }
-  .like-card > b { font-size: 16px; }
-  .like-card p { margin: 4px 0 0; font-size: 14px; color: var(--muted); line-height: 1.6; }
-  @media (max-width: 560px) {
-    .likes { grid-template-columns: 1fr; }
-  }
-
   /* 목표 카드 */
   .goals-list {
     display: flex;
@@ -412,127 +308,6 @@
   }
   @media (max-width: 560px) {
     #back-to-top { bottom: 20px; right: 20px; width: 44px; height: 44px; font-size: 20px; }
-  }
-
-  /* ── 귀여운 고양이 '까몽이' (직접 그린 그림) ── */
-  #cat {
-    position: fixed;
-    left: 20px;
-    bottom: 16px;
-    z-index: 100;
-    width: 88px;
-    height: 88px;
-    padding: 0;
-    border: none;
-    background: none;
-    cursor: pointer;
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,.18));
-    transition: transform .2s;
-  }
-  #cat:hover { transform: translateY(-4px) rotate(-4deg); }
-  #cat svg { width: 100%; height: 100%; overflow: visible; }
-  :root[data-theme="dark"] #cat { filter: drop-shadow(0 0 6px rgba(255,255,255,.35)); }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) #cat { filter: drop-shadow(0 0 6px rgba(255,255,255,.35)); }
-  }
-  .cat-tail { transform-origin: 88px 92px; animation: wag 1.6s ease-in-out infinite; }
-  .cat-eye { transform-box: fill-box; transform-origin: center; animation: blink 4s infinite; }
-  @keyframes wag { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(14deg); } }
-  @keyframes blink { 0%,92%,100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
-  #cat.jump { animation: hop .45s ease; }
-  @keyframes hop { 0%,100% { transform: translateY(0); } 40% { transform: translateY(-16px); } }
-  #cat-bubble {
-    position: fixed;
-    left: 20px;
-    bottom: 112px;
-    z-index: 100;
-    max-width: 220px;
-    background: var(--surface);
-    color: var(--text);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 10px 14px;
-    font-size: 14px;
-    line-height: 1.5;
-    box-shadow: 0 6px 18px rgba(0,0,0,.12);
-    opacity: 0;
-    transform: translateY(6px);
-    pointer-events: none;
-    transition: opacity .2s, transform .2s;
-  }
-  #cat-bubble::after {
-    content: "";
-    position: absolute;
-    left: 34px;
-    bottom: -7px;
-    width: 12px;
-    height: 12px;
-    background: var(--surface);
-    border-right: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    transform: rotate(45deg);
-  }
-  #cat-bubble.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
-  #cat-bubble a { color: var(--accent); font-weight: 700; }
-  @media (max-width: 560px) {
-    #cat { width: 66px; height: 66px; left: 12px; bottom: 12px; }
-    #cat-bubble { left: 12px; bottom: 86px; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .cat-tail, .cat-eye, #cat.jump { animation: none; }
-  }
-
-
-  /* ── 까몽이 여기저기 ── */
-  .mini-cat { width: 40px; height: 40px; flex: none; }
-  :root[data-theme="dark"] .mini-cat { filter: drop-shadow(0 0 4px rgba(255,255,255,.35)); }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .mini-cat { filter: drop-shadow(0 0 4px rgba(255,255,255,.35)); }
-  }
-  .avatar-wrap { position: relative; flex: none; }
-  .avatar-cat {
-    position: absolute;
-    right: -10px;
-    bottom: -6px;
-    animation: peek 3s ease-in-out infinite;
-  }
-  .avatar-cat .mini-cat { width: 52px; height: 52px; }
-  @keyframes peek { 0%,100% { transform: rotate(0); } 50% { transform: rotate(-10deg) translateY(-3px); } }
-  .hero-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
-  .btn {
-    display: inline-block;
-    padding: 10px 18px;
-    border-radius: 999px;
-    font-weight: 700;
-    font-size: 15px;
-    text-decoration: none;
-    transition: transform .2s;
-  }
-  .btn:hover { transform: translateY(-2px); }
-  .btn-main { background: var(--accent); color: #fff; }
-  .btn-sub { background: var(--chip); color: var(--navy); }
-  nav ul a.nav-gb {
-    color: var(--accent);
-    font-weight: 700;
-  }
-  .gb-box {
-    background: var(--accent-soft);
-    border: 2px solid var(--accent);
-    border-radius: 20px;
-    padding: 24px 22px;
-  }
-  .gb-hello { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-  .gb-hello .mini-cat { width: 54px; height: 54px; animation: peek 3s ease-in-out infinite; }
-  .gb-hello p { margin: 0; }
-  .gb-hello small { color: var(--muted); }
-  .foot-cat { display: flex; align-items: center; justify-content: center; gap: 8px; }
-  .foot-cat .mini-cat { width: 32px; height: 32px; }
-  @media (max-width: 560px) {
-    .hero-cta { justify-content: center; }
-    .gb-box { padding: 20px 16px; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .avatar-cat, .gb-hello .mini-cat { animation: none; }
   }
 
   /* ── 방명록 ── */
@@ -645,30 +420,9 @@
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="kamong-face" viewBox="20 8 80 78">
-    <path d="M24 44 L30 12 L52 32 Z" fill="#26232b"/>
-    <path d="M96 44 L90 12 L68 32 Z" fill="#26232b"/>
-    <path d="M30 38 L33 21 L45 32 Z" fill="#8a5a44"/>
-    <path d="M90 38 L87 21 L75 32 Z" fill="#8a5a44"/>
-    <ellipse cx="60" cy="52" rx="38" ry="31" fill="#26232b"/>
-    <ellipse cx="44" cy="52" rx="8" ry="10" fill="#fff"/>
-    <ellipse cx="45" cy="54" rx="5" ry="7" fill="#1a1720"/>
-    <circle cx="47" cy="50" r="2.2" fill="#fff"/>
-    <ellipse cx="76" cy="52" rx="8" ry="10" fill="#fff"/>
-    <ellipse cx="75" cy="54" rx="5" ry="7" fill="#1a1720"/>
-    <circle cx="77" cy="50" r="2.2" fill="#fff"/>
-    <ellipse cx="33" cy="66" rx="6" ry="3.5" fill="#ff8fa8" opacity=".75"/>
-    <ellipse cx="87" cy="66" rx="6" ry="3.5" fill="#ff8fa8" opacity=".75"/>
-    <path d="M56 63 L64 63 L60 67 Z" fill="#ff8fa8"/>
-    <path d="M60 67 Q56 72 52 69 M60 67 Q64 72 68 69" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-  </symbol>
-</svg>
-
 <nav aria-label="주 메뉴">
   <div class="inner">
     <a class="logo" href="#top">김가윤<span>.</span></a>
-    <div class="right">
     <ul>
       <li><a href="#about">소개</a></li>
       <li><a href="#learning">배우는 것</a></li>
@@ -676,29 +430,20 @@
       <li><a href="#works">만든 것</a></li>
       <li><a href="#github">GitHub</a></li>
       <li><a href="#goals">목표</a></li>
-      <li><a href="#guestbook" class="nav-gb">💌 방명록</a></li>
+      <li><a href="#guestbook">방명록</a></li>
       <li><a href="#contact">연락</a></li>
     </ul>
-    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="야간모드 켜기" title="야간모드 켜기">🌙</button>
-    </div>
   </div>
 </nav>
 
 <main id="top">
 
   <div class="hero">
-    <div class="avatar-wrap">
-      <div class="avatar" aria-label="김가윤 프로필">가윤</div>
-      <span class="avatar-cat"><svg class="mini-cat" aria-hidden="true"><use href="#kamong-face"/></svg></span>
-    </div>
+    <div class="avatar" aria-label="김가윤 프로필">가윤</div>
     <div>
       <p class="hello">안녕하세요 👋</p>
       <h1>저는 김가윤입니다</h1>
       <p class="school">국민대학교 경영정보학부 · 1학년</p>
-      <div class="hero-cta">
-        <a class="btn btn-main" href="#guestbook">💌 방명록 남기기</a>
-        <a class="btn btn-sub" href="game.html">🎮 게임 하러 가기</a>
-      </div>
     </div>
   </div>
 
@@ -712,25 +457,6 @@
       <div><dt>전공</dt><dd>경영정보학부</dd></div>
       <div><dt>학년</dt><dd>1학년</dd></div>
     </dl>
-
-    <p class="likes-title">제가 좋아하는 것들이에요 💛</p>
-    <div class="likes">
-      <div class="like-card">
-        <span class="like-icon" aria-hidden="true">🐈‍⬛</span>
-        <b>고양이</b>
-        <p>고양이를 정말 좋아해요. 그래서 이 사이트에도 고양이 <b>까몽이</b>를 데려왔어요! 왼쪽 아래에서 한번 눌러보세요.</p>
-      </div>
-      <div class="like-card">
-        <span class="like-icon" aria-hidden="true">🍰</span>
-        <b>맛있는 음식</b>
-        <p>먹는 걸 좋아해요. 맛있는 걸 먹으면 하루가 행복해져요.</p>
-      </div>
-      <div class="like-card">
-        <span class="like-icon" aria-hidden="true">👗</span>
-        <b>옷</b>
-        <p>옷 구경하고 스타일링하는 걸 좋아해요. 사람들이 왜 어떤 옷을 고르는지도 궁금해요.</p>
-      </div>
-    </div>
   </section>
 
   <section id="learning">
@@ -765,35 +491,10 @@
       <div class="icon" aria-hidden="true">🚀</div>
       <div>
         <h3>어마어마한 총게임ㅋㅋ</h3>
-        <p>까만 고양이 까몽이가 발바닥 🐾을 쏴서 장난꾸러기 고양이들을 물리치는 슈팅 게임이에요. 키보드와 휴대폰 모두 할 수 있어요.</p>
+        <p>적 편대를 물리치는 슈팅 게임이에요. 키보드와 휴대폰 모두 할 수 있어요.</p>
       </div>
       <span class="go" aria-label="게임 플레이하기">플레이 →</span>
     </a>
-
-    <details class="howto">
-      <summary>🎮 게임 방법 보기</summary>
-      <div class="howto-body">
-        <h4>조작법</h4>
-        <ul>
-          <li><b>컴퓨터</b>: <kbd>←</kbd> <kbd>→</kbd> (또는 <kbd>A</kbd> <kbd>D</kbd>)로 이동, <kbd>Space</kbd>로 발사</li>
-          <li><b>휴대폰</b>: 왼쪽 아래 <b>◀ ▶</b> 버튼으로 이동, 오른쪽 아래 빨간 <b>발사</b> 버튼으로 쏘기</li>
-          <li>시작·다시 시작은 <kbd>Enter</kbd>, <kbd>Space</kbd>, 또는 화면 터치</li>
-        </ul>
-        <h4>규칙</h4>
-        <ul>
-          <li>목숨은 <b>3개</b>예요. 고양이들이 던지는 털실 공이나 고양이에게 부딪히면 하나씩 줄어요.</li>
-          <li>적을 모두 물리치면 <b>다음 스테이지</b>로! 갈수록 적이 빨라지고 더 자주 공격해요.</li>
-          <li>최고 점수는 내 기기에 저장돼서 다음에 와도 남아 있어요.</li>
-        </ul>
-        <h4>점수표</h4>
-        <ul>
-          <li>🐱 뾰족귀 고양이 <b>50점</b> (회색·치즈·흰색)</li>
-          <li>😺 통통 고양이 <b>80점</b> (크림·갈색·샴)</li>
-          <li>👑 왕관 쓴 대장 고양이 <b>150점</b> (두 번 맞혀야 해요. 한 번 맞으면 빨갛게 화나요)</li>
-          <li>💥 나에게 <b>돌진해 오는 적</b>을 맞히면 점수 <b>2배</b>!</li>
-        </ul>
-      </div>
-    </details>
   </section>
 
   <section id="github">
@@ -828,12 +529,8 @@
   </section>
 
   <section id="guestbook">
-    <div class="gb-box">
-    <h2>💌 방명록</h2>
-    <div class="gb-hello">
-      <svg class="mini-cat" aria-hidden="true"><use href="#kamong-face"/></svg>
-      <p>까몽이가 편지를 기다리고 있어요! 별명과 한 줄 메시지를 남겨 주세요.<br><small>남긴 글은 모두에게 보여요 😊</small></p>
-    </div>
+    <h2>방명록</h2>
+    <p>별명과 한 줄 메시지를 남겨 주세요.</p>
 
     <div class="gb-form">
       <div class="gb-row">
@@ -862,7 +559,6 @@
     <div id="gb-list" class="gb-list" aria-label="방명록 목록">
       <p class="gb-empty">불러오는 중…</p>
     </div>
-  </div>
   </section>
 
   <section id="contact">
@@ -881,43 +577,10 @@
 </main>
 
 <footer>
-  <p class="foot-cat"><svg class="mini-cat" aria-hidden="true"><use href="#kamong-face"/></svg> 까몽이랑 기다릴게요. 또 놀러 와요!</p>
   <p>© 2026 김가윤 · 국민대학교 경영정보학부</p>
 </footer>
 
 <button id="back-to-top" aria-label="맨 위로 가기" title="맨 위로 가기">↑</button>
-
-<!-- 귀여운 고양이 '까몽이': 누르면 말해요 -->
-<div id="cat-bubble" role="status" aria-live="polite"></div>
-<button id="cat" type="button" aria-label="고양이 까몽이 쓰다듬기" title="눌러봐!">
-  <svg viewBox="0 0 120 120" aria-hidden="true">
-    <path class="cat-tail" d="M88 92 C108 90 112 70 102 62 C98 59 94 63 98 67 C103 73 98 84 86 84 Z" fill="#26232b"/>
-    <ellipse cx="60" cy="92" rx="30" ry="22" fill="#26232b"/>
-    <ellipse cx="48" cy="111" rx="8" ry="5" fill="#34303a"/>
-    <ellipse cx="72" cy="111" rx="8" ry="5" fill="#34303a"/>
-    <path d="M24 44 L30 12 L52 32 Z" fill="#26232b"/>
-    <path d="M96 44 L90 12 L68 32 Z" fill="#26232b"/>
-    <path d="M30 38 L33 21 L45 32 Z" fill="#8a5a44"/>
-    <path d="M90 38 L87 21 L75 32 Z" fill="#8a5a44"/>
-    <ellipse cx="60" cy="52" rx="38" ry="31" fill="#26232b"/>
-    <g class="cat-eye">
-      <ellipse cx="44" cy="52" rx="8" ry="10" fill="#fff"/>
-      <ellipse cx="45" cy="54" rx="5" ry="7" fill="#1a1720"/>
-      <circle cx="47" cy="50" r="2.2" fill="#fff"/>
-    </g>
-    <g class="cat-eye">
-      <ellipse cx="76" cy="52" rx="8" ry="10" fill="#fff"/>
-      <ellipse cx="75" cy="54" rx="5" ry="7" fill="#1a1720"/>
-      <circle cx="77" cy="50" r="2.2" fill="#fff"/>
-    </g>
-    <ellipse cx="33" cy="66" rx="6" ry="3.5" fill="#ff8fa8" opacity=".75"/>
-    <ellipse cx="87" cy="66" rx="6" ry="3.5" fill="#ff8fa8" opacity=".75"/>
-    <path d="M56 63 L64 63 L60 67 Z" fill="#ff8fa8"/>
-    <path d="M60 67 Q56 72 52 69 M60 67 Q64 72 68 69" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-    <path d="M60 104 C54 98 50 94 54 90 C57 88 60 91 60 93 C60 91 63 88 66 90 C70 94 66 98 60 104 Z" fill="#8a5a44"/>
-  </svg>
-</button>
-
 
 <script>
   (function () {
@@ -934,69 +597,6 @@
     });
   })();
 </script>
-
-<script>
-  /* ── 야간모드 버튼 ── */
-  (function () {
-    var root = document.documentElement;
-    var btn = document.getElementById('theme-toggle');
-    var mq = window.matchMedia('(prefers-color-scheme: dark)');
-    function isDark() {
-      var t = root.getAttribute('data-theme');
-      return t ? t === 'dark' : mq.matches;
-    }
-    function render() {
-      var dark = isDark();
-      btn.textContent = dark ? '☀️' : '🌙';
-      var label = dark ? '주간모드 켜기' : '야간모드 켜기';
-      btn.setAttribute('aria-label', label);
-      btn.title = label;
-    }
-    btn.addEventListener('click', function () {
-      var next = isDark() ? 'light' : 'dark';
-      root.setAttribute('data-theme', next);
-      try { localStorage.setItem('theme', next); } catch (e) {}
-      render();
-    });
-    if (mq.addEventListener) mq.addEventListener('change', render);
-    render();
-  })();
-</script>
-
-<script>
-  /* ── 고양이 까몽이 ── */
-  (function () {
-    var cat = document.getElementById('cat');
-    var bubble = document.getElementById('cat-bubble');
-    var lines = [
-      '헤헤 간지러워 🐾',
-      '여기까지 와줘서 고마워냥!',
-      '<a href="#guestbook">방명록</a>에 한 줄 남겨줄래? 💌',
-      '오른쪽 위 🌙 누르면 밤 모드가 돼!',
-      '<a href="game.html">총게임</a> 해봤어? 최고 점수 도전! 🚀',
-      '쓰담쓰담… 기분 좋다옹 😺'
-    ];
-    var i = 0, timer = null;
-    function say(html, ms) {
-      bubble.innerHTML = html;
-      bubble.classList.add('show');
-      cat.classList.remove('jump');
-      void cat.offsetWidth;
-      cat.classList.add('jump');
-      clearTimeout(timer);
-      timer = setTimeout(function () { bubble.classList.remove('show'); }, ms);
-    }
-    /* 처음 들어오면 인사하기 */
-    setTimeout(function () {
-      say('안농! 👋 난 까몽이야.<br>놀러 와줘서 고마워냥 🐾', 5000);
-    }, 800);
-    cat.addEventListener('click', function () {
-      say(lines[i], 3500);
-      i = (i + 1) % lines.length;
-    });
-  })();
-</script>
-
 
 <script>
   /* ── 방명록 ── */
@@ -1109,16 +709,17 @@
             // 성공
             nickEl.value = '';
             msgEl.value  = '';
-            setStatus('', '');
+            setStatus('저장됐어요! 🐾', 'done');
+            setTimeout(function () { setStatus('', ''); }, 3000);
             loadList();
           } else {
             // 서버 검사 실패 (400) 또는 기타 오류
-            var msg = (result.data && result.data.error) || '저장에 실패했어요.';
-            setStatus(msg, 'error');
+            var errMsg = (result.data && result.data.error) || '저장 실패, 다시 시도해 주세요.';
+            setStatus(errMsg, 'error');
           }
         })
         .catch(function () {
-          setStatus('저장에 실패했어요. 잠시 후 다시 시도해 주세요.', 'error');
+          setStatus('저장 실패, 다시 시도해 주세요.', 'error');
         })
         .finally(function () {
           submitEl.disabled = false;
