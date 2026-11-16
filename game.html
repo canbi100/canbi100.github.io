@@ -82,6 +82,21 @@
     font-size: 18px;
   }
   #touch #btnFire:active { background: #ff7a92; }
+  /* 한/EN 전환 버튼 (오른쪽 위) */
+  #langBtn {
+    position: fixed;
+    top: calc(10px + env(safe-area-inset-top));
+    right: 10px;
+    z-index: 5;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid #2a2f55;
+    background: #12142a;
+    color: #8a90b0;
+    font: bold 14px system-ui, sans-serif;
+    cursor: pointer;
+  }
+  #langBtn .on { color: #ffa53a; }
   @media (pointer: coarse) {
     #touch { display: flex; }
     #wrap { height: calc(100% - 112px); }
@@ -99,8 +114,30 @@
     <button id="btnFire">발사</button>
   </div>
 </div>
+<button id="langBtn" type="button" aria-label="Switch to English"><span data-l="ko" class="on">한</span> / <span data-l="en">EN</span></button>
 
 <script>
+// ===== 한/EN 전환 (홈페이지와 같은 설정을 써요) =====
+let lang = 'ko';
+try { if (localStorage.getItem('lang') === 'en') lang = 'en'; } catch (e) {}
+const T = (ko, en) => lang === 'en' ? en : ko;
+const KO_TITLE = document.title;
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.title = T(KO_TITLE, 'The Awesome Shooting Game lol — made by Gayoon Kim');
+  document.getElementById('btnFire').textContent = T('발사', 'FIRE');
+  const lb = document.getElementById('langBtn');
+  lb.querySelectorAll('[data-l]').forEach(s => s.classList.toggle('on', s.dataset.l === lang));
+  lb.setAttribute('aria-label', T('Switch to English', '한국어로 보기'));
+}
+document.getElementById('langBtn').addEventListener('click', e => {
+  lang = lang === 'en' ? 'ko' : 'en';
+  try { localStorage.setItem('lang', lang); } catch (err) {}
+  applyLang();
+  e.currentTarget.blur();   // 스페이스바가 버튼을 다시 누르지 않게
+});
+applyLang();
+
 // ===== 기본 설정 =====
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
@@ -520,9 +557,9 @@ function draw() {
   ctx.font = 'bold 16px monospace';
   ctx.fillStyle = '#fff';
   ctx.textAlign = 'left';
-  ctx.fillText('점수 ' + score, 12, 24);
+  ctx.fillText(T('점수 ', 'SCORE ') + score, 12, 24);
   ctx.textAlign = 'right';
-  ctx.fillText('최고 ' + best, W - 12, 24);
+  ctx.fillText(T('최고 ', 'BEST ') + best, W - 12, 24);
   if (state !== 'title') {
     ctx.textAlign = 'center';
     ctx.fillText('STAGE ' + level, W / 2, 24);
@@ -530,21 +567,22 @@ function draw() {
   }
 
   if (state === 'title') {
-    centerText('어마어마한 총게임ㅋㅋ', 230, 36, '#ffa53a');
-    centerText('← → : 이동    스페이스바 : 발사', 300, 16, '#dfe8ff');
-    centerText('돌격하는 고양이를 맞히면 점수 2배! 🐾', 330, 16, '#3ee0d0');
-    if (Math.floor(time * 2) % 2 === 0) centerText('Enter 키 또는 화면을 눌러 시작', 400, 18, '#fff');
-    centerText('만든 사람', 520, 14, '#8a90b0');
-    centerText('국민대 경영정보 1학년 김가윤', 548, 18, '#ffa53a');
+    if (lang === 'en') { centerText('The Awesome', 205, 34, '#ffa53a'); centerText('Shooting Game lol', 245, 34, '#ffa53a'); }
+    else centerText('어마어마한 총게임ㅋㅋ', 230, 36, '#ffa53a');
+    centerText(T('← → : 이동    스페이스바 : 발사', '← → : Move    Space : Fire'), 300, 16, '#dfe8ff');
+    centerText(T('돌격하는 고양이를 맞히면 점수 2배! 🐾', 'Hit a diving cat for 2x points! 🐾'), 330, 16, '#3ee0d0');
+    if (Math.floor(time * 2) % 2 === 0) centerText(T('Enter 키 또는 화면을 눌러 시작', 'Press Enter or tap to start'), 400, 18, '#fff');
+    centerText(T('만든 사람', 'Made by'), 520, 14, '#8a90b0');
+    centerText(T('국민대 경영정보 1학년 김가윤', 'Gayoon Kim, Kookmin Univ. MIS'), 548, 18, '#ffa53a');
   }
   if (state === 'play' && enemies.length === 0) {
     centerText('STAGE ' + level + ' CLEAR!', H / 2, 30, '#fff6a0');
   }
   if (state === 'over') {
     centerText('GAME OVER', H / 2 - 20, 40, '#ff5a5a');
-    centerText('최종 점수 ' + score, H / 2 + 24, 20, '#fff');
-    if (time - overAt > 1 && Math.floor(time * 2) % 2 === 0) centerText('Enter 키 또는 화면을 눌러 다시 시작', H / 2 + 70, 16, '#dfe8ff');
-    centerText('made by 국민대 경영정보 1학년 김가윤', H - 40, 14, '#8a90b0');
+    centerText(T('최종 점수 ', 'FINAL SCORE ') + score, H / 2 + 24, 20, '#fff');
+    if (time - overAt > 1 && Math.floor(time * 2) % 2 === 0) centerText(T('Enter 키 또는 화면을 눌러 다시 시작', 'Press Enter or tap to play again'), H / 2 + 70, 16, '#dfe8ff');
+    centerText(T('made by 국민대 경영정보 1학년 김가윤', 'made by Gayoon Kim, Kookmin Univ. MIS'), H - 40, 14, '#8a90b0');
   }
 }
 

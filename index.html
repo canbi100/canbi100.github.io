@@ -57,6 +57,10 @@
       var t = localStorage.getItem('theme');
       if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
     } catch (e) {}
+    /* 저장된 언어(한/EN) 설정도 먼저 적용 */
+    try {
+      if (localStorage.getItem('lang') === 'en') document.documentElement.setAttribute('lang', 'en');
+    } catch (e) {}
   })();
 </script>
 <title>김가윤 — 국민대학교 경영정보학부 | 개인 소개</title>
@@ -119,6 +123,41 @@
   }
   .theme-toggle:hover { transform: rotate(-15deg) scale(1.08); }
   nav .right { display: flex; align-items: center; gap: 14px; }
+  .nav-btns { display: flex; align-items: center; gap: 8px; flex: none; }
+
+  /* 한/EN 전환 버튼 */
+  .lang-toggle {
+    flex: none;
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: transform .2s, border-color .2s;
+  }
+  .lang-toggle:hover { transform: scale(1.06); border-color: var(--accent); }
+  .lang-toggle .on { color: var(--accent); }
+  .lang-toggle .sep { opacity: .5; font-weight: 400; }
+  /* 휴대폰: 첫 줄 = 이름 + 버튼들, 둘째 줄 = 메뉴 */
+  @media (max-width: 560px) {
+    nav .inner { flex-wrap: wrap; row-gap: 8px; padding: 10px 14px; }
+    nav .right { display: contents; }
+    nav .inner .logo { order: 1; }
+    .nav-btns { order: 2; }
+    nav .inner ul { order: 3; width: 100%; flex-wrap: nowrap; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+    nav ul::-webkit-scrollbar { display: none; }
+    nav ul li:has(.nav-gb) { order: -1; }   /* 방명록은 잘 보이게 맨 앞으로 */
+    .lang-toggle { height: 34px; padding: 0 10px; font-size: 13px; }
+    .theme-toggle { width: 34px; height: 34px; font-size: 16px; }
+  }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
@@ -665,21 +704,24 @@
   </symbol>
 </svg>
 
-<nav aria-label="주 메뉴">
+<nav aria-label="주 메뉴" data-i18n-aria="nav_aria">
   <div class="inner">
-    <a class="logo" href="#top">김가윤<span>.</span></a>
+    <a class="logo" href="#top" data-i18n="logo">김가윤<span>.</span></a>
     <div class="right">
     <ul>
-      <li><a href="#about">소개</a></li>
-      <li><a href="#learning">배우는 것</a></li>
-      <li><a href="#courses">수강 과목</a></li>
-      <li><a href="#works">만든 것</a></li>
+      <li><a href="#about" data-i18n="nav_about">소개</a></li>
+      <li><a href="#learning" data-i18n="nav_learning">배우는 것</a></li>
+      <li><a href="#courses" data-i18n="nav_courses">수강 과목</a></li>
+      <li><a href="#works" data-i18n="nav_works">만든 것</a></li>
       <li><a href="#github">GitHub</a></li>
-      <li><a href="#goals">목표</a></li>
-      <li><a href="#guestbook" class="nav-gb">💌 방명록</a></li>
-      <li><a href="#contact">연락</a></li>
+      <li><a href="#goals" data-i18n="nav_goals">목표</a></li>
+      <li><a href="#guestbook" class="nav-gb" data-i18n="nav_gb">💌 방명록</a></li>
+      <li><a href="#contact" data-i18n="nav_contact">연락</a></li>
     </ul>
-    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="야간모드 켜기" title="야간모드 켜기">🌙</button>
+    <div class="nav-btns">
+      <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch to English" title="Switch to English"><span data-l="ko" class="on">한</span><span class="sep">/</span><span data-l="en">EN</span></button>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="야간모드 켜기" title="야간모드 켜기">🌙</button>
+    </div>
     </div>
   </div>
 </nav>
@@ -688,91 +730,91 @@
 
   <div class="hero">
     <div class="avatar-wrap">
-      <div class="avatar" aria-label="김가윤 프로필">가윤</div>
+      <div class="avatar" aria-label="김가윤 프로필" data-i18n="avatar" data-i18n-aria="avatar_aria">가윤</div>
       <span class="avatar-cat"><svg class="mini-cat" aria-hidden="true"><use href="#kamong-face"/></svg></span>
     </div>
     <div>
-      <p class="hello">안녕하세요 👋</p>
-      <h1>저는 김가윤입니다</h1>
-      <p class="school">국민대학교 경영정보학부 · 1학년</p>
+      <p class="hello" data-i18n="hello">안녕하세요 👋</p>
+      <h1 data-i18n="h1">저는 김가윤입니다</h1>
+      <p class="school" data-i18n="school">국민대학교 경영정보학부 · 1학년</p>
       <div class="hero-cta">
-        <a class="btn btn-main" href="#guestbook">💌 방명록 남기기</a>
-        <a class="btn btn-sub" href="game.html">🎮 게임 하러 가기</a>
+        <a class="btn btn-main" href="#guestbook" data-i18n="cta_gb">💌 방명록 남기기</a>
+        <a class="btn btn-sub" href="game.html" data-i18n="cta_game">🎮 게임 하러 가기</a>
       </div>
     </div>
   </div>
 
   <section id="about">
-    <h2>소개</h2>
-    <p>저는 <strong>김가윤</strong>입니다. 현재 <strong>국민대학교 경영정보학부</strong> 1학년에 재학 중이며, 경영과 IT를 함께 배우고 있습니다.</p>
-    <p>코딩은 처음이지만 GitHub와 AI 코딩 도구를 활용해 직접 웹사이트를 만들어 가며 조금씩 성장하고 있어요. 이 사이트도 그렇게 만든 결과물이에요!</p>
-    <dl class="info">
+    <h2 data-i18n="h_about">소개</h2>
+    <p data-i18n="about1">저는 <strong>김가윤</strong>입니다. 현재 <strong>국민대학교 경영정보학부</strong> 1학년에 재학 중이며, 경영과 IT를 함께 배우고 있습니다.</p>
+    <p data-i18n="about2">코딩은 처음이지만 GitHub와 AI 코딩 도구를 활용해 직접 웹사이트를 만들어 가며 조금씩 성장하고 있어요. 이 사이트도 그렇게 만든 결과물이에요!</p>
+    <dl class="info" data-i18n="info">
       <div><dt>이름</dt><dd>김가윤</dd></div>
       <div><dt>학교</dt><dd>국민대학교</dd></div>
       <div><dt>전공</dt><dd>경영정보학부</dd></div>
       <div><dt>학년</dt><dd>1학년</dd></div>
     </dl>
 
-    <p class="likes-title">제가 좋아하는 것들이에요 💛</p>
+    <p class="likes-title" data-i18n="likes_title">제가 좋아하는 것들이에요 💛</p>
     <div class="likes">
       <div class="like-card">
         <span class="like-icon" aria-hidden="true">🐈‍⬛</span>
-        <b>고양이</b>
-        <p>고양이를 정말 좋아해요. 그래서 이 사이트에도 고양이 <b>까몽이</b>를 데려왔어요! 왼쪽 아래에서 한번 눌러보세요.</p>
+        <b data-i18n="like1_t">고양이</b>
+        <p data-i18n="like1">고양이를 정말 좋아해요. 그래서 이 사이트에도 고양이 <b>까몽이</b>를 데려왔어요! 왼쪽 아래에서 한번 눌러보세요.</p>
       </div>
       <div class="like-card">
         <span class="like-icon" aria-hidden="true">🍰</span>
-        <b>맛있는 음식</b>
-        <p>먹는 걸 좋아해요. 맛있는 걸 먹으면 하루가 행복해져요.</p>
+        <b data-i18n="like2_t">맛있는 음식</b>
+        <p data-i18n="like2">먹는 걸 좋아해요. 맛있는 걸 먹으면 하루가 행복해져요.</p>
       </div>
       <div class="like-card">
         <span class="like-icon" aria-hidden="true">👗</span>
-        <b>옷</b>
-        <p>옷 구경하고 스타일링하는 걸 좋아해요. 사람들이 왜 어떤 옷을 고르는지도 궁금해요.</p>
+        <b data-i18n="like3_t">옷</b>
+        <p data-i18n="like3">옷 구경하고 스타일링하는 걸 좋아해요. 사람들이 왜 어떤 옷을 고르는지도 궁금해요.</p>
       </div>
     </div>
   </section>
 
   <section id="learning">
-    <h2>요즘 배우는 것</h2>
-    <p>웹사이트를 직접 만들어서 인터넷에 올리는 방법을 배우고 있어요.</p>
+    <h2 data-i18n="h_learning">요즘 배우는 것</h2>
+    <p data-i18n="learning">웹사이트를 직접 만들어서 인터넷에 올리는 방법을 배우고 있어요.</p>
     <div class="chips">
       <span>HTML</span>
       <span>CSS</span>
       <span>JavaScript</span>
       <span>GitHub</span>
       <span>GitHub Pages</span>
-      <span>AI 코딩 도구 (Kiro)</span>
+      <span data-i18n="chip_ai">AI 코딩 도구 (Kiro)</span>
     </div>
   </section>
 
   <section id="courses">
-    <h2>수강 과목</h2>
-    <p class="chips-label">2026년 2학기</p>
+    <h2 data-i18n="h_courses">수강 과목</h2>
+    <p class="chips-label" data-i18n="sem">2026년 2학기</p>
     <div class="chips">
-      <span>경영정보학원론</span>
+      <span data-i18n="course1">경영정보학원론</span>
     </div>
-    <p class="chips-label" style="margin-top: 18px;">스스로 공부 중</p>
+    <p class="chips-label" style="margin-top: 18px;" data-i18n="self">스스로 공부 중</p>
     <div class="chips">
-      <span>GitHub로 웹사이트 만들기</span>
-      <span>AI 코딩 도구(Kiro) 활용</span>
+      <span data-i18n="self1">GitHub로 웹사이트 만들기</span>
+      <span data-i18n="self2">AI 코딩 도구(Kiro) 활용</span>
     </div>
   </section>
 
   <section id="works">
-    <h2>내가 만든 것</h2>
+    <h2 data-i18n="h_works">내가 만든 것</h2>
     <a class="project" href="game.html">
       <div class="icon" aria-hidden="true">🚀</div>
       <div>
-        <h3>어마어마한 총게임ㅋㅋ</h3>
-        <p>까만 고양이 까몽이가 발바닥 🐾을 쏴서 장난꾸러기 고양이들을 물리치는 슈팅 게임이에요. 키보드와 휴대폰 모두 할 수 있어요.</p>
+        <h3 data-i18n="game_t">어마어마한 총게임ㅋㅋ</h3>
+        <p data-i18n="game_d">까만 고양이 까몽이가 발바닥 🐾을 쏴서 장난꾸러기 고양이들을 물리치는 슈팅 게임이에요. 키보드와 휴대폰 모두 할 수 있어요.</p>
       </div>
-      <span class="go" aria-label="게임 플레이하기">플레이 →</span>
+      <span class="go" aria-label="게임 플레이하기" data-i18n="play" data-i18n-aria="play_aria">플레이 →</span>
     </a>
 
     <details class="howto">
-      <summary>🎮 게임 방법 보기</summary>
-      <div class="howto-body">
+      <summary data-i18n="howto_s">🎮 게임 방법 보기</summary>
+      <div class="howto-body" data-i18n="howto">
         <h4>조작법</h4>
         <ul>
           <li><b>컴퓨터</b>: <kbd>←</kbd> <kbd>→</kbd> (또는 <kbd>A</kbd> <kbd>D</kbd>)로 이동, <kbd>Space</kbd>로 발사</li>
@@ -798,7 +840,7 @@
 
   <section id="github">
     <h2>GitHub</h2>
-    <p>직접 만든 코드와 프로젝트를 GitHub에 올리고 있어요.</p>
+    <p data-i18n="gh_p">직접 만든 코드와 프로젝트를 GitHub에 올리고 있어요.</p>
     <a class="project" href="https://github.com/canbi100" target="_blank" rel="noopener noreferrer">
       <div class="icon" style="background: #161b22;" aria-hidden="true">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true">
@@ -807,32 +849,32 @@
       </div>
       <div>
         <h3>canbi100</h3>
-        <p>github.com/canbi100 — 웹사이트 소스 코드와 프로젝트 기록</p>
+        <p data-i18n="gh_d">github.com/canbi100 — 웹사이트 소스 코드와 프로젝트 기록</p>
       </div>
-      <span class="go" aria-label="GitHub 프로필로 이동">보러 가기 →</span>
+      <span class="go" aria-label="GitHub 프로필로 이동" data-i18n="gh_go" data-i18n-aria="gh_go_aria">보러 가기 →</span>
     </a>
   </section>
 
   <section id="goals">
-    <h2>앞으로의 목표</h2>
+    <h2 data-i18n="h_goals">앞으로의 목표</h2>
     <div class="goals-list">
       <div class="goal-card">
         <span class="goal-icon" aria-hidden="true">💡</span>
-        <p>경영과 IT를 함께 이해하는 사람이 되고 싶어요. 기술만 알거나 경영만 아는 게 아니라, 두 분야를 연결할 수 있는 시각을 키우고 싶습니다.</p>
+        <p data-i18n="goal1">경영과 IT를 함께 이해하는 사람이 되고 싶어요. 기술만 알거나 경영만 아는 게 아니라, 두 분야를 연결할 수 있는 시각을 키우고 싶습니다.</p>
       </div>
       <div class="goal-card">
         <span class="goal-icon" aria-hidden="true">📊</span>
-        <p>데이터와 디지털 도구를 활용해 사람들이 진짜 원하는 것을 찾아내는 마케터가 되는 것이 목표예요. 숫자 뒤에 숨은 사람의 이야기를 읽어내고 싶습니다.</p>
+        <p data-i18n="goal2">데이터와 디지털 도구를 활용해 사람들이 진짜 원하는 것을 찾아내는 마케터가 되는 것이 목표예요. 숫자 뒤에 숨은 사람의 이야기를 읽어내고 싶습니다.</p>
       </div>
     </div>
   </section>
 
   <section id="guestbook">
     <div class="gb-box">
-    <h2>💌 방명록</h2>
+    <h2 data-i18n="h_gb">💌 방명록</h2>
     <div class="gb-hello">
       <svg class="mini-cat" aria-hidden="true"><use href="#kamong-face"/></svg>
-      <p>까몽이가 편지를 기다리고 있어요! 별명과 한 줄 메시지를 남겨 주세요.<br><small>남긴 글은 모두에게 보여요 😊</small></p>
+      <p data-i18n="gb_hello">까몽이가 편지를 기다리고 있어요! 별명과 한 줄 메시지를 남겨 주세요.<br><small>남긴 글은 모두에게 보여요 😊</small></p>
     </div>
 
     <div class="gb-form">
@@ -842,54 +884,58 @@
           class="gb-input"
           type="text"
           placeholder="별명 (2~12자)"
+          data-i18n-ph="ph_nick"
           maxlength="12"
           autocomplete="off"
           aria-label="별명"
+          data-i18n-aria="aria_nick"
         >
-        <button id="gb-submit" class="gb-btn" type="button" aria-label="방명록 남기기">남기기</button>
+        <button id="gb-submit" class="gb-btn" type="button" aria-label="방명록 남기기" data-i18n="gb_submit" data-i18n-aria="gb_submit_aria">남기기</button>
       </div>
       <textarea
         id="gb-msg"
         class="gb-msg-input"
         placeholder="한 줄 메시지 (최대 100자)"
+        data-i18n-ph="ph_msg"
         maxlength="100"
         rows="2"
         aria-label="메시지"
+        data-i18n-aria="aria_msg"
       ></textarea>
       <p id="gb-status" class="gb-status" role="status" aria-live="polite"></p>
     </div>
 
-    <div id="gb-list" class="gb-list" aria-label="방명록 목록">
-      <p class="gb-empty">불러오는 중…</p>
+    <div id="gb-list" class="gb-list" aria-label="방명록 목록" data-i18n-aria="gb_list_aria">
+      <p class="gb-empty" data-i18n="loading">불러오는 중…</p>
     </div>
   </div>
   </section>
 
   <section id="contact">
-    <h2>연락하기</h2>
-    <p>궁금한 점이 있으면 편하게 메일 보내주세요.</p>
+    <h2 data-i18n="h_contact">연락하기</h2>
+    <p data-i18n="contact_p">궁금한 점이 있으면 편하게 메일 보내주세요.</p>
     <a class="project" href="mailto:gayoon@kookmin.ac.kr">
       <div class="icon" style="background: var(--accent-soft); font-size: 32px;" aria-hidden="true">✉️</div>
       <div>
-        <h3>이메일</h3>
+        <h3 data-i18n="email">이메일</h3>
         <p>gayoon@kookmin.ac.kr</p>
       </div>
-      <span class="go" aria-label="이메일 보내기">보내기 →</span>
+      <span class="go" aria-label="이메일 보내기" data-i18n="send" data-i18n-aria="send_aria">보내기 →</span>
     </a>
   </section>
 
 </main>
 
 <footer>
-  <p class="foot-cat"><svg class="mini-cat" aria-hidden="true"><use href="#kamong-face"/></svg> 까몽이랑 기다릴게요. 또 놀러 와요!</p>
-  <p>© 2026 김가윤 · 국민대학교 경영정보학부</p>
+  <p class="foot-cat"><svg class="mini-cat" aria-hidden="true"><use href="#kamong-face"/></svg> <span data-i18n="foot1">까몽이랑 기다릴게요. 또 놀러 와요!</span></p>
+  <p data-i18n="foot2">© 2026 김가윤 · 국민대학교 경영정보학부</p>
 </footer>
 
-<button id="back-to-top" aria-label="맨 위로 가기" title="맨 위로 가기">↑</button>
+<button id="back-to-top" aria-label="맨 위로 가기" title="맨 위로 가기" data-i18n-aria="top" data-i18n-title="top">↑</button>
 
 <!-- 귀여운 고양이 '까몽이': 누르면 말해요 -->
 <div id="cat-bubble" role="status" aria-live="polite"></div>
-<button id="cat" type="button" aria-label="고양이 까몽이 쓰다듬기" title="눌러봐!">
+<button id="cat" type="button" aria-label="고양이 까몽이 쓰다듬기" title="눌러봐!" data-i18n-aria="cat_aria" data-i18n-title="cat_title">
   <svg viewBox="0 0 120 120" aria-hidden="true">
     <path class="cat-tail" d="M88 92 C108 90 112 70 102 62 C98 59 94 63 98 67 C103 73 98 84 86 84 Z" fill="#26232b"/>
     <ellipse cx="60" cy="92" rx="30" ry="22" fill="#26232b"/>
@@ -917,6 +963,136 @@
     <path d="M60 104 C54 98 50 94 54 90 C57 88 60 91 60 93 C60 91 63 88 66 90 C70 94 66 98 60 104 Z" fill="#8a5a44"/>
   </svg>
 </button>
+
+<script>
+  /* ── 한/EN 전환 ──
+     data-i18n="키" 가 붙은 글자를 영어로 바꿔요. 한국어는 원래 글자를 기억해 뒀다가 되돌려요.
+     방명록에 사람들이 쓴 글은 바꾸지 않아요. */
+  (function () {
+    var EN = {
+      title: 'Gayoon Kim — Kookmin University, Management Information Systems',
+      logo: 'Gayoon<span>.</span>',
+      nav_aria: 'Main menu',
+      nav_about: 'About',
+      nav_learning: 'Learning',
+      nav_courses: 'Courses',
+      nav_works: 'Projects',
+      nav_goals: 'Goals',
+      nav_gb: '💌 Guestbook',
+      nav_contact: 'Contact',
+      avatar: 'GY',
+      avatar_aria: 'Gayoon Kim profile',
+      hello: 'Hello 👋',
+      h1: 'I\'m Gayoon Kim',
+      school: 'Kookmin University, Management Information Systems · Freshman',
+      cta_gb: '💌 Sign the guestbook',
+      cta_game: '🎮 Play the game',
+      h_about: 'About',
+      about1: 'I\'m <strong>Gayoon Kim</strong>, a first-year student in <strong>Management Information Systems at Kookmin University</strong>, studying business and IT together.',
+      about2: 'I\'m new to coding, but I\'m growing little by little by building websites myself with GitHub and AI coding tools. This site is one of them!',
+      info: '<div><dt>Name</dt><dd>Gayoon Kim</dd></div>\n      <div><dt>School</dt><dd>Kookmin University</dd></div>\n      <div><dt>Major</dt><dd>Management Information Systems</dd></div>\n      <div><dt>Year</dt><dd>Freshman</dd></div>',
+      likes_title: 'Things I love 💛',
+      like1_t: 'Cats',
+      like1: 'I really love cats. That\'s why I brought a cat named <b>Kamong</b> to this site! Try tapping it at the bottom left.',
+      like2_t: 'Good food',
+      like2: 'I love eating. Good food makes my whole day happy.',
+      like3_t: 'Fashion',
+      like3: 'I love browsing and styling clothes. I\'m also curious why people pick the clothes they do.',
+      h_learning: 'What I\'m learning',
+      learning: 'I\'m learning how to build websites myself and put them on the internet.',
+      chip_ai: 'AI coding tool (Kiro)',
+      h_courses: 'Courses',
+      sem: 'Fall 2026',
+      course1: 'Introduction to MIS',
+      self: 'Studying on my own',
+      self1: 'Building websites with GitHub',
+      self2: 'Using the AI coding tool Kiro',
+      h_works: 'What I made',
+      game_t: 'The Awesome Shooting Game lol',
+      game_d: 'A shooting game where Kamong the black cat fires paw prints 🐾 at mischievous cats. Play with a keyboard or on your phone.',
+      play: 'Play →',
+      play_aria: 'Play the game',
+      howto_s: '🎮 How to play',
+      howto: '<h4>Controls</h4>\n        <ul>\n          <li><b>Computer</b>: move with <kbd>←</kbd> <kbd>→</kbd> (or <kbd>A</kbd> <kbd>D</kbd>), shoot with <kbd>Space</kbd></li>\n          <li><b>Phone</b>: move with the <b>◀ ▶</b> buttons at the bottom left, shoot with the red <b>FIRE</b> button at the bottom right</li>\n          <li>Start or restart with <kbd>Enter</kbd>, <kbd>Space</kbd>, or by tapping the screen</li>\n        </ul>\n        <h4>Rules</h4>\n        <ul>\n          <li>You have <b>3 lives</b>. You lose one when you get hit by a yarn ball or bump into a cat.</li>\n          <li>Beat all the enemies to reach the <b>next stage</b>! Enemies get faster and attack more often.</li>\n          <li>Your best score is saved on your device, so it\'s still there next time.</li>\n        </ul>\n        <h4>Points</h4>\n        <ul>\n          <li>🐱 Pointy-eared cat <b>50 pts</b> (gray · orange · white)</li>\n          <li>😺 Chubby cat <b>80 pts</b> (cream · brown · Siamese)</li>\n          <li>👑 Boss cat with a crown <b>150 pts</b> (needs two hits — turns red and angry after the first)</li>\n          <li>💥 Hit an enemy <b>diving at you</b> for <b>double</b> points!</li>\n        </ul>',
+      gh_p: 'I upload the code and projects I make to GitHub.',
+      gh_d: 'github.com/canbi100 — website source code and project log',
+      gh_go: 'Visit →',
+      gh_go_aria: 'Go to GitHub profile',
+      h_goals: 'My goals',
+      goal1: 'I want to understand both business and IT. Not just tech or just business, but the perspective to connect the two.',
+      goal2: 'My goal is to become a marketer who uses data and digital tools to find what people really want. I want to read the human stories behind the numbers.',
+      h_gb: '💌 Guestbook',
+      gb_hello: 'Kamong is waiting for your letter! Leave a nickname and a one-line message.<br><small>Everyone can see what you write 😊</small>',
+      ph_nick: 'Nickname (2–12 chars)',
+      aria_nick: 'Nickname',
+      gb_submit: 'Post',
+      gb_submit_aria: 'Post to guestbook',
+      ph_msg: 'One-line message (max 100 chars)',
+      aria_msg: 'Message',
+      gb_list_aria: 'Guestbook messages',
+      loading: 'Loading…',
+      h_contact: 'Contact',
+      contact_p: 'Feel free to email me if you have any questions.',
+      email: 'Email',
+      send: 'Send →',
+      send_aria: 'Send an email',
+      foot1: 'Kamong and I will be waiting. Come back soon!',
+      foot2: '© 2026 Gayoon Kim · Kookmin University, Management Information Systems',
+      top: 'Back to top',
+      cat_aria: 'Pet Kamong the cat',
+      cat_title: 'Tap me!'
+    };
+
+    var root = document.documentElement;
+    var lang = root.getAttribute('lang') === 'en' ? 'en' : 'ko';
+    window.T = function (ko, en) { return lang === 'en' ? en : ko; };
+
+    /* 한국어 원래 글자 기억해 두기 */
+    var KO = { title: document.title };
+    var ATTRS = [['data-i18n-ph', 'placeholder'], ['data-i18n-aria', 'aria-label'], ['data-i18n-title', 'title']];
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      el._ko = el.innerHTML;
+    });
+    ATTRS.forEach(function (a) {
+      document.querySelectorAll('[' + a[0] + ']').forEach(function (el) {
+        el['_ko_' + a[1]] = el.getAttribute(a[1]);
+      });
+    });
+
+    var btn = document.getElementById('lang-toggle');
+
+    function apply() {
+      var en = lang === 'en';
+      root.setAttribute('lang', lang);
+      document.title = en ? EN.title : KO.title;
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var k = el.getAttribute('data-i18n');
+        el.innerHTML = en && EN[k] != null ? EN[k] : el._ko;
+      });
+      ATTRS.forEach(function (a) {
+        document.querySelectorAll('[' + a[0] + ']').forEach(function (el) {
+          var k = el.getAttribute(a[0]);
+          el.setAttribute(a[1], en && EN[k] != null ? EN[k] : el['_ko_' + a[1]]);
+        });
+      });
+      btn.querySelectorAll('[data-l]').forEach(function (s) {
+        s.classList.toggle('on', s.getAttribute('data-l') === lang);
+      });
+      var label = en ? '한국어로 보기' : 'Switch to English';
+      btn.setAttribute('aria-label', label);
+      btn.title = label;
+    }
+
+    btn.addEventListener('click', function () {
+      lang = lang === 'en' ? 'ko' : 'en';
+      try { localStorage.setItem('lang', lang); } catch (e) {}
+      apply();
+      document.dispatchEvent(new Event('langchange'));
+    });
+
+    apply();
+  })();
+</script>
 
 
 <script>
@@ -948,7 +1124,7 @@
     function render() {
       var dark = isDark();
       btn.textContent = dark ? '☀️' : '🌙';
-      var label = dark ? '주간모드 켜기' : '야간모드 켜기';
+      var label = dark ? T('주간모드 켜기', 'Switch to light mode') : T('야간모드 켜기', 'Switch to dark mode');
       btn.setAttribute('aria-label', label);
       btn.title = label;
     }
@@ -959,6 +1135,7 @@
       render();
     });
     if (mq.addEventListener) mq.addEventListener('change', render);
+    document.addEventListener('langchange', render);
     render();
   })();
 </script>
@@ -969,12 +1146,13 @@
     var cat = document.getElementById('cat');
     var bubble = document.getElementById('cat-bubble');
     var lines = [
-      '헤헤 간지러워 🐾',
-      '여기까지 와줘서 고마워냥!',
-      '<a href="#guestbook">방명록</a>에 한 줄 남겨줄래? 💌',
-      '오른쪽 위 🌙 누르면 밤 모드가 돼!',
-      '<a href="game.html">총게임</a> 해봤어? 최고 점수 도전! 🚀',
-      '쓰담쓰담… 기분 좋다옹 😺'
+      ['헤헤 간지러워 🐾', 'Hehe, that tickles 🐾'],
+      ['여기까지 와줘서 고마워냥!', 'Thanks for coming all the way here, meow!'],
+      ['<a href="#guestbook">방명록</a>에 한 줄 남겨줄래? 💌', 'Will you leave a line in the <a href="#guestbook">guestbook</a>? 💌'],
+      ['오른쪽 위 🌙 누르면 밤 모드가 돼!', 'Tap 🌙 at the top right for night mode!'],
+      ['<a href="game.html">총게임</a> 해봤어? 최고 점수 도전! 🚀', 'Tried the <a href="game.html">shooting game</a>? Go for a high score! 🚀'],
+      ['오른쪽 위 한/EN 버튼으로 언어를 바꿀 수 있어!', 'Use the 한/EN button at the top right to switch language!'],
+      ['쓰담쓰담… 기분 좋다옹 😺', 'Pat pat… feels so good, meow 😺']
     ];
     var i = 0, timer = null;
     function say(html, ms) {
@@ -988,10 +1166,10 @@
     }
     /* 처음 들어오면 인사하기 */
     setTimeout(function () {
-      say('안농! 👋 난 까몽이야.<br>놀러 와줘서 고마워냥 🐾', 5000);
+      say(T('안농! 👋 난 까몽이야.<br>놀러 와줘서 고마워냥 🐾', 'Hi! 👋 I\'m Kamong.<br>Thanks for visiting, meow 🐾'), 5000);
     }, 800);
     cat.addEventListener('click', function () {
-      say(lines[i], 3500);
+      say(T(lines[i][0], lines[i][1]), 3500);
       i = (i + 1) % lines.length;
     });
   })();
@@ -1022,7 +1200,7 @@
     function fmtTime(iso) {
       try {
         var d = new Date(iso);
-        return d.toLocaleString('ko-KR', {
+        return d.toLocaleString(T('ko-KR', 'en-US'), {
           year: 'numeric', month: '2-digit', day: '2-digit',
           hour: '2-digit', minute: '2-digit'
         });
@@ -1036,9 +1214,11 @@
     }
 
     /* ── 목록 렌더 ── */
+    var lastItems = null;   // 언어 바꾸면 다시 그리려고 기억해 둠
     function renderList(items) {
+      lastItems = items;
       if (!items || items.length === 0) {
-        listEl.innerHTML = '<p class="gb-empty">아직 방명록이 없어요. 첫 글을 남겨보세요!</p>';
+        listEl.innerHTML = '<p class="gb-empty">' + T('아직 방명록이 없어요. 첫 글을 남겨보세요!', 'No messages yet. Be the first to write one!') + '</p>';
         return;
       }
       listEl.innerHTML = items.map(function (item) {
@@ -1065,7 +1245,8 @@
           renderList(data);
         })
         .catch(function () {
-          listEl.innerHTML = '<p class="gb-empty">목록을 불러오지 못했어요.</p>';
+          lastItems = null;
+          listEl.innerHTML = '<p class="gb-empty">' + T('목록을 불러오지 못했어요.', 'Couldn\'t load the messages.') + '</p>';
         });
     }
 
@@ -1073,8 +1254,8 @@
     function clientValidate(nick, msg) {
       var n = nick.trim();
       var m = msg.trim();
-      if (n.length < 2 || n.length > 12) return '별명은 2~12자여야 해요.';
-      if (m.length < 1 || m.length > 100) return '메시지는 1~100자여야 해요.';
+      if (n.length < 2 || n.length > 12) return T('별명은 2~12자여야 해요.', 'Nickname must be 2–12 characters.');
+      if (m.length < 1 || m.length > 100) return T('메시지는 1~100자여야 해요.', 'Message must be 1–100 characters.');
       return null;
     }
 
@@ -1092,7 +1273,7 @@
 
       // 저장 중 상태
       submitEl.disabled = true;
-      setStatus('저장 중…', 'saving');
+      setStatus(T('저장 중…', 'Saving…'), 'saving');
 
       fetch(API, {
         method: 'POST',
@@ -1109,22 +1290,41 @@
             // 성공
             nickEl.value = '';
             msgEl.value  = '';
-            setStatus('저장됐어요! 🐾', 'done');
+            setStatus(T('저장됐어요! 🐾', 'Saved! 🐾'), 'done');
             setTimeout(function () { setStatus('', ''); }, 3000);
             loadList();
           } else {
             // 서버 검사 실패 (400) 또는 기타 오류
             var msg = (result.data && result.data.error) || '저장에 실패했어요.';
-            setStatus(msg, 'error');
+            setStatus(T(msg, serverErrEn(msg)), 'error');
           }
         })
         .catch(function () {
-          setStatus('저장 실패, 다시 시도해 주세요.', 'error');
+          setStatus(T('저장 실패, 다시 시도해 주세요.', 'Save failed. Please try again.'), 'error');
         })
         .finally(function () {
           submitEl.disabled = false;
         });
     }
+
+    /* ── 서버가 보낸 한국어 오류 → 영어 (서버 코드는 그대로) ── */
+    function serverErrEn(msg) {
+      var map = {
+        '별명을 입력해 주세요.': 'Please enter a nickname.',
+        '별명은 2~12자여야 합니다.': 'Nickname must be 2–12 characters.',
+        '메시지를 입력해 주세요.': 'Please enter a message.',
+        '메시지는 1~100자여야 합니다.': 'Message must be 1–100 characters.',
+        '요청 형식이 올바르지 않습니다.': 'Invalid request.'
+      };
+      return map[msg] || 'Save failed. Please try again.';
+    }
+
+    /* ── 언어 바꾸면: 목록 다시 그리고, 상태 메시지는 지우기 ── */
+    document.addEventListener('langchange', function () {
+      if (lastItems) renderList(lastItems);
+      else if (listEl.querySelector('.gb-empty') && !listEl.querySelector('[data-i18n]')) loadList();
+      setStatus('', '');
+    });
 
     /* ── 이벤트 연결 ── */
     submitEl.addEventListener('click', submitEntry);
