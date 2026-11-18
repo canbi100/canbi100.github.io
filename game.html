@@ -118,8 +118,14 @@
 
 <script>
 // ===== 한/EN 전환 (홈페이지와 같은 설정을 써요) =====
-let lang = 'ko';
-try { if (localStorage.getItem('lang') === 'en') lang = 'en'; } catch (e) {}
+// 언어 고르기: 주소의 ?lang=en → 저장된 설정 → 브라우저 언어 순서
+let lang = null;
+try {
+  const q = new URLSearchParams(location.search).get('lang');
+  if (q === 'en' || q === 'ko') { lang = q; localStorage.setItem('lang', q); }
+} catch (e) {}
+if (!lang) { try { lang = localStorage.getItem('lang'); } catch (e) {} }
+if (lang !== 'en' && lang !== 'ko') lang = /^ko/i.test(navigator.language || 'ko') ? 'ko' : 'en';
 const T = (ko, en) => lang === 'en' ? en : ko;
 const KO_TITLE = document.title;
 function applyLang() {

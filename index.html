@@ -57,10 +57,15 @@
       var t = localStorage.getItem('theme');
       if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
     } catch (e) {}
-    /* 저장된 언어(한/EN) 설정도 먼저 적용 */
+    /* 언어(한/EN) 고르기: 주소의 ?lang=en → 저장된 설정 → 브라우저 언어 순서 */
+    var l = null;
     try {
-      if (localStorage.getItem('lang') === 'en') document.documentElement.setAttribute('lang', 'en');
+      var q = new URLSearchParams(location.search).get('lang');
+      if (q === 'en' || q === 'ko') { l = q; localStorage.setItem('lang', q); }
     } catch (e) {}
+    if (!l) { try { l = localStorage.getItem('lang'); } catch (e) {} }
+    if (l !== 'en' && l !== 'ko') l = /^ko/i.test(navigator.language || 'ko') ? 'ko' : 'en';
+    document.documentElement.setAttribute('lang', l);
   })();
 </script>
 <title>김가윤 — 국민대학교 경영정보학부 | 개인 소개</title>
